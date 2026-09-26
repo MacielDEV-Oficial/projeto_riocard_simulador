@@ -1,0 +1,20 @@
+//#region node_modules/.nitro/vite/services/ssr/assets/_tanstack-start-manifest_v-C-6vZFVI.js
+var tsrStartManifest = () => ({ routes: {
+	__root__: {
+		filePath: "/home/andreylucasmaciel/Downloads/rio-card-calendar-main/src/routes/__root.tsx",
+		children: ["/"],
+		preloads: ["/assets/index-DJORR50L.js"],
+		scripts: [{ attrs: {
+			type: "module",
+			async: !0,
+			src: "/assets/index-DJORR50L.js"
+		} }]
+	},
+	"/": {
+		filePath: "/home/andreylucasmaciel/Downloads/rio-card-calendar-main/src/routes/index.tsx",
+		children: void 0,
+		preloads: ["/assets/routes-D9LMhOUD.js"]
+	}
+} });
+//#endregion
+export { tsrStartManifest };

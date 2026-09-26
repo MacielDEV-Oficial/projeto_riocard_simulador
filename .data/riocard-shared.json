@@ -1,0 +1,107 @@
+{
+  "accounts": [
+    {
+      "firstName": "Andrey",
+      "celular": "21974411129",
+      "password": "1234"
+    },
+    {
+      "firstName": "Raquel",
+      "celular": "21995917648",
+      "password": "1234"
+    },
+    {
+      "firstName": "Maciel",
+      "celular": "21976288596",
+      "password": "1234"
+    },
+    {
+      "firstName": "Marcus",
+      "celular": "21999999999",
+      "password": "1234"
+    }
+  ],
+  "userData": {
+    "21974411129": {
+      "saldo": "269",
+      "tarifa": "6.70",
+      "viagens": "2",
+      "inicio": "2026-09-26",
+      "feriados": [],
+      "alertaRecargaAtivo": false
+    },
+    "21995917648": {
+      "saldo": "1000",
+      "tarifa": "4.90",
+      "viagens": "4",
+      "inicio": "2026-09-26",
+      "feriados": [],
+      "alertaRecargaAtivo": false
+    },
+    "21999999999": {
+      "cards": [
+        {
+          "id": "cartao-1790394571005-18d31c",
+          "nome": "Andrey",
+          "saldo": "269",
+          "tarifa": "6.70",
+          "viagens": "2",
+          "inicio": "2026-09-26",
+          "feriados": [],
+          "alertaRecargaAtivo": false,
+          "cor": "laranja"
+        },
+        {
+          "id": "cartao-1790394584745-124bf5",
+          "nome": "Curso",
+          "saldo": "350",
+          "tarifa": "5.00",
+          "viagens": "2",
+          "inicio": "2026-09-26",
+          "feriados": [],
+          "alertaRecargaAtivo": false,
+          "cor": "roxo"
+        },
+        {
+          "id": "cartao-1790394621631-e9c6e4",
+          "nome": "trabalho",
+          "saldo": "2000",
+          "tarifa": "4.70",
+          "viagens": "2",
+          "inicio": "2026-09-26",
+          "feriados": [],
+          "alertaRecargaAtivo": false,
+          "cor": "verde"
+        }
+      ],
+      "activeCardId": "cartao-1790394571005-18d31c"
+    },
+    "21976288596": {
+      "cards": [
+        {
+          "id": "cartao-1790395553185-3a3cae",
+          "nome": "Pessoal",
+          "saldo": "250",
+          "tarifa": "6.70",
+          "viagens": "4",
+          "inicio": "2026-09-26",
+          "feriados": [],
+          "alertaRecargaAtivo": false,
+          "cor": "cinza"
+        },
+        {
+          "id": "cartao-1790395622772-780e4a",
+          "nome": "Curso",
+          "saldo": "350",
+          "tarifa": "7.00",
+          "viagens": "2",
+          "inicio": "2026-09-26",
+          "feriados": [],
+          "alertaRecargaAtivo": false,
+          "cor": "verde"
+        }
+      ],
+      "activeCardId": "cartao-1790395622772-780e4a"
+    }
+  }
+}
