@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CalendarDays, ChevronLeft, ChevronRight, CircleDollarSign, Menu, WalletCards } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { CalendarDays, ChevronLeft, ChevronRight, CircleDollarSign, Eye, EyeOff, Menu, WalletCards } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,8 @@ const STORAGE_KEY = "riocard-planner";
 const STORAGE_ACCOUNTS_KEY = "riocard-accounts";
 const STORAGE_SESSION_KEY = "riocard-session";
 const API_BASE = "/api";
+const SESSION_TTL_MS = 1000 * 60 * 60 * 24;
+const SESSION_TTL_REMEMBER_MS = 1000 * 60 * 60 * 24 * 30;
 
 const CARD_THEMES = {
   azul: { name: "Azul", from: "#0f8cff", via: "#0080ff", to: "#0069e8", glow: "rgba(0, 121, 250, 0.35)" },
@@ -46,7 +48,10 @@ type CardColorKey = keyof typeof CARD_THEMES;
 type Account = {
   firstName: string;
   celular: string;
-  password: string;
+  password?: string;
+  token?: string;
+  expiresAt?: number;
+  rememberMe?: boolean;
 };
 
 type Cartao = {
@@ -58,6 +63,7 @@ type Cartao = {
   inicio: string;
   feriados: string[];
   alertaRecargaAtivo: boolean;
+  saldoPrivado: boolean;
   cor: CardColorKey;
 };
 
@@ -66,7 +72,24 @@ const getCardTheme = (cor?: string) => {
   return CARD_THEMES[key];
 };
 
+const getNomeCartaoExibicao = (nome?: string) => (nome ?? "").trim() || "Cartão";
+
 const normalizePhone = (valor: string) => valor.replace(/\D/g, "");
+const gerarTokenSessao = () => {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+};
+
+const getSessionTtl = (rememberMe: boolean) => (rememberMe ? SESSION_TTL_REMEMBER_MS : SESSION_TTL_MS);
+const expiraSessaoEm = (rememberMe = true) => Date.now() + getSessionTtl(rememberMe);
+const isSessionValid = (session: Partial<Account> | null) => {
+  if (!session?.celular || !session?.firstName || !session?.token || !session?.expiresAt) return false;
+  return Number(session.expiresAt) > Date.now();
+};
+
 const formatarCelular = (valor: string) => {
   const digits = normalizePhone(valor).slice(0, 11);
 
@@ -97,10 +120,17 @@ const parseData = (valor: string | null) => {
   return new Date(ano, mes - 1, dia);
 };
 
-async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
+async function apiRequest<T>(path: string, init?: RequestInit, authToken?: string): Promise<T> {
+  const headers = new Headers(init?.headers ?? {});
+  headers.set("Content-Type", "application/json");
+
+  if (authToken) {
+    headers.set("Authorization", `Bearer ${authToken}`);
+  }
+
   const response = await fetch(`${API_BASE}${path}`, {
-    headers: { "Content-Type": "application/json" },
     ...init,
+    headers,
   });
 
   const payload = await response.json().catch(() => ({}));
@@ -146,9 +176,18 @@ function Index() {
   const [cadastroConfirmacao, setCadastroConfirmacao] = useState("");
   const [authError, setAuthError] = useState("");
   const [celularEmUso, setCelularEmUso] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const carouselRef = useRef<HTMLDivElement | null>(null);
-  const cardRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const ultimaNotificacaoRef = useRef<string | null>(null);
+
+  const limparSessao = (motivo = "Sessão expirada.") => {
+    setSession(null);
+    localStorage.removeItem(STORAGE_SESSION_KEY);
+    setPage("home");
+    setMenuOpen(false);
+    setAuthError(motivo);
+  };
 
   useEffect(() => {
     const onBeforeInstallPrompt = (event: Event) => {
@@ -168,11 +207,36 @@ function Index() {
       const rawSession = localStorage.getItem(STORAGE_SESSION_KEY);
       if (!rawSession) return;
       const savedSession = JSON.parse(rawSession) as Account;
-      if (savedSession?.celular && savedSession?.firstName) {
-        setSession(savedSession);
+
+      if (!isSessionValid(savedSession)) {
+        localStorage.removeItem(STORAGE_SESSION_KEY);
+        setSession(null);
+        return;
       }
-    } catch { /* mantém sessão vazia */ }
+
+      setRememberMe(savedSession.rememberMe ?? true);
+      setSession(savedSession);
+    } catch {
+      localStorage.removeItem(STORAGE_SESSION_KEY);
+      setSession(null);
+    }
   }, []);
+
+  useEffect(() => {
+    if (!session?.token || !session?.expiresAt) return;
+
+    const tempoRestante = Number(session.expiresAt) - Date.now();
+    if (tempoRestante <= 0) {
+      limparSessao("Sua sessão expirou. Faça login novamente.");
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      limparSessao("Sua sessão expirou. Faça login novamente.");
+    }, tempoRestante);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [session]);
 
   const aplicarCartaoAtivo = (cartao: Cartao | null) => {
     if (!cartao) return;
@@ -202,13 +266,18 @@ function Index() {
     inicio: iso(hoje),
     feriados: [],
     alertaRecargaAtivo: true,
+    saldoPrivado: true,
     cor: "azul",
     ...overrides,
   });
 
   const carregarDadosDoUsuario = async (usuario: Account) => {
     try {
-      const response = await apiRequest<{ data?: Record<string, unknown> }>('/user-data?celular=' + encodeURIComponent(usuario.celular));
+      const response = await apiRequest<{ data?: Record<string, unknown> }>(
+        '/user-data?celular=' + encodeURIComponent(usuario.celular),
+        undefined,
+        usuario.token,
+      );
       const salvo = (response.data ?? {}) as Record<string, unknown>;
       const cardsRaw = Array.isArray(salvo.cards) ? (salvo.cards as Array<Record<string, unknown>>) : [];
 
@@ -222,6 +291,7 @@ function Index() {
           inicio: String(card.inicio ?? iso(hoje)),
           feriados: Array.isArray(card.feriados) ? (card.feriados as string[]) : [],
           alertaRecargaAtivo: typeof card.alertaRecargaAtivo === "boolean" ? card.alertaRecargaAtivo : true,
+          saldoPrivado: typeof card.saldoPrivado === "boolean" ? card.saldoPrivado : true,
           cor: typeof card.cor === "string" && card.cor in CARD_THEMES ? (card.cor as CardColorKey) : "azul",
         }));
 
@@ -242,6 +312,7 @@ function Index() {
         inicio: String(salvo.inicio ?? iso(hoje)),
         feriados: Array.isArray(salvo.feriados) ? (salvo.feriados as string[]) : [],
         alertaRecargaAtivo: typeof salvo.alertaRecargaAtivo === "boolean" ? salvo.alertaRecargaAtivo : true,
+        saldoPrivado: typeof salvo.saldoPrivado === "boolean" ? salvo.saldoPrivado : true,
       });
       setCartoes([legacyCard]);
       setCartaoAtivoId(legacyCard.id);
@@ -264,6 +335,7 @@ function Index() {
             inicio: String(card.inicio ?? iso(hoje)),
             feriados: Array.isArray(card.feriados) ? (card.feriados as string[]) : [],
             alertaRecargaAtivo: typeof card.alertaRecargaAtivo === "boolean" ? card.alertaRecargaAtivo : true,
+            saldoPrivado: typeof card.saldoPrivado === "boolean" ? card.saldoPrivado : true,
             cor: typeof card.cor === "string" && card.cor in CARD_THEMES ? (card.cor as CardColorKey) : "azul",
           }));
           setCartoes(normalizedCards);
@@ -281,6 +353,7 @@ function Index() {
           inicio: String(salvo.inicio ?? iso(hoje)),
           feriados: Array.isArray(salvo.feriados) ? (salvo.feriados as string[]) : [],
           alertaRecargaAtivo: typeof salvo.alertaRecargaAtivo === "boolean" ? salvo.alertaRecargaAtivo : true,
+          saldoPrivado: typeof salvo.saldoPrivado === "boolean" ? salvo.saldoPrivado : true,
         });
         setCartoes([fallbackCard]);
         setCartaoAtivoId(fallbackCard.id);
@@ -329,13 +402,16 @@ function Index() {
     setNotificacaoPermissao(Notification.permission);
   }, []);
 
-  const salvarConfiguracoes = async () => {
+  const persistirConfiguracoes = useCallback(async (opcoes: { mostrarToast?: boolean; cartoesOverride?: Cartao[] } = {}) => {
     if (!session) {
-      toast.error("Faça login para salvar seus dados.");
+      if (opcoes.mostrarToast) {
+        toast.error("Faça login para salvar seus dados.");
+      }
       return;
     }
 
-    const listaCartoes = cartoes.map((cartao) => {
+    const baseCartoes = opcoes.cartoesOverride ?? cartoes;
+    const listaCartoes = baseCartoes.map((cartao) => {
       if (cartao.id !== cartaoAtivoId) return cartao;
       return {
         ...cartao,
@@ -345,6 +421,7 @@ function Index() {
         inicio,
         feriados,
         alertaRecargaAtivo,
+        saldoPrivado: cartao.saldoPrivado ?? true,
       };
     });
 
@@ -352,17 +429,51 @@ function Index() {
 
     try {
       const userKey = getUserStorageKey(session.celular);
-      await apiRequest('/user-data', {
-        method: 'POST',
-        body: JSON.stringify({ celular: session.celular, data: payload }),
-      });
+      await apiRequest(
+        '/user-data',
+        {
+          method: 'POST',
+          body: JSON.stringify({ celular: session.celular, data: payload }),
+        },
+        session.token,
+      );
+
       localStorage.setItem(userKey, JSON.stringify(payload));
-      localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(session));
-      setCartoes(listaCartoes);
-      toast.success("Configurações salvas");
-      setPage("home");
+      if (opcoes.mostrarToast) {
+        toast.success("Configurações salvas");
+      }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Não foi possível salvar as configurações.");
+      if (opcoes.mostrarToast) {
+        toast.error(error instanceof Error ? error.message : "Não foi possível salvar as configurações.");
+      }
+    }
+  }, [session, cartoes, cartaoAtivoId, saldo, tarifa, viagens, inicio, feriados, alertaRecargaAtivo]);
+
+  useEffect(() => {
+    if (!session || page !== "settings") return;
+
+    const timeoutId = window.setTimeout(() => {
+      void persistirConfiguracoes({ mostrarToast: false });
+    }, 250);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [page, session, cartoes, cartaoAtivoId, saldo, tarifa, viagens, inicio, feriados, alertaRecargaAtivo, persistirConfiguracoes]);
+
+  const salvarConfiguracoes = async () => {
+    await persistirConfiguracoes({ mostrarToast: true });
+    setPage("home");
+  };
+
+  const alternarSaldoPrivado = (id: string) => {
+    const proximoEstado = cartoes.map((cartao) => {
+      if (cartao.id !== id) return cartao;
+      return { ...cartao, saldoPrivado: !(cartao.saldoPrivado ?? true) };
+    });
+
+    setCartoes(proximoEstado);
+
+    if (session) {
+      void persistirConfiguracoes({ cartoesOverride: proximoEstado, mostrarToast: false });
     }
   };
 
@@ -398,17 +509,38 @@ function Index() {
   };
 
   const renomearCartao = (id: string, nome: string) => {
-    const valor = nome.trim() || "Cartão";
-    setCartoes((lista) => lista.map((cartao) => (cartao.id === id ? { ...cartao, nome: valor } : cartao)));
+    setCartoes((lista) => lista.map((cartao) => (cartao.id === id ? { ...cartao, nome } : cartao)));
+  };
+
+  const removerCartao = (id: string) => {
+    const restante = cartoes.filter((cartao) => cartao.id !== id);
+
+    if (restante.length === 0) {
+      setCartoes([]);
+      setCartaoAtivoId(null);
+      return;
+    }
+
+    const proximoAtivo = cartaoAtivoId === id ? restante[0] : restante.find((cartao) => cartao.id === cartaoAtivoId) ?? restante[0];
+    setCartoes(restante);
+    setCartaoAtivoId(proximoAtivo.id);
+    aplicarCartaoAtivo(proximoAtivo);
   };
 
   const salvarConta = (conta: Account) => {
     const contas = JSON.parse(localStorage.getItem(STORAGE_ACCOUNTS_KEY) ?? "[]") as Account[];
     const jaExiste = contas.some((item) => normalizePhone(item.celular) === normalizePhone(conta.celular));
-    const lista = jaExiste ? contas.map((item) => (normalizePhone(item.celular) === normalizePhone(conta.celular) ? conta : item)) : [...contas, conta];
+    const contaPersistida: Account = {
+      ...conta,
+      password: undefined,
+      token: conta.token ?? gerarTokenSessao(),
+      expiresAt: conta.expiresAt ?? expiraSessaoEm(conta.rememberMe ?? rememberMe),
+      rememberMe: conta.rememberMe ?? rememberMe,
+    };
+    const lista = jaExiste ? contas.map((item) => (normalizePhone(item.celular) === normalizePhone(conta.celular) ? contaPersistida : item)) : [...contas, contaPersistida];
     localStorage.setItem(STORAGE_ACCOUNTS_KEY, JSON.stringify(lista));
-    localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(conta));
-    setSession(conta);
+    localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(contaPersistida));
+    setSession(contaPersistida);
     setPage("home");
     setMenuOpen(false);
   };
@@ -430,11 +562,19 @@ function Index() {
     try {
       const conta = await apiRequest<Account>('/auth/login', {
         method: 'POST',
-        body: JSON.stringify({ celular, password: loginSenha }),
+        body: JSON.stringify({ celular, password: loginSenha, rememberMe }),
       });
 
-      localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(conta));
-      setSession(conta);
+      const sessionData: Account = {
+        firstName: conta.firstName,
+        celular: conta.celular,
+        token: conta.token ?? gerarTokenSessao(),
+        expiresAt: conta.expiresAt ?? expiraSessaoEm(rememberMe),
+        rememberMe: conta.rememberMe ?? rememberMe,
+      };
+
+      localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(sessionData));
+      setSession(sessionData);
       setAuthError("");
       setPage("home");
       setLoginCelular("");
@@ -474,11 +614,19 @@ function Index() {
     try {
       const novaConta = await apiRequest<Account>('/auth/register', {
         method: 'POST',
-        body: JSON.stringify({ firstName: nome, celular, password: senha }),
+        body: JSON.stringify({ firstName: nome, celular, password: senha, rememberMe }),
       });
 
-      localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(novaConta));
-      setSession(novaConta);
+      const sessionData: Account = {
+        firstName: novaConta.firstName,
+        celular: novaConta.celular,
+        token: novaConta.token ?? gerarTokenSessao(),
+        expiresAt: novaConta.expiresAt ?? expiraSessaoEm(rememberMe),
+        rememberMe: novaConta.rememberMe ?? rememberMe,
+      };
+
+      localStorage.setItem(STORAGE_SESSION_KEY, JSON.stringify(sessionData));
+      setSession(sessionData);
       setAuthError("");
       setCadastroNome("");
       setCadastroCelular("");
@@ -702,6 +850,16 @@ function Index() {
                     <span className="mb-2 block text-sm font-semibold text-foreground">Senha</span>
                     <input type="password" value={loginSenha} onChange={(e) => setLoginSenha(e.target.value)} placeholder="Sua senha" className="field" />
                   </label>
+                  <label className="flex items-center gap-3 rounded-xl border border-[#dfe9f5] bg-[#f8fbff] px-3 py-2">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="h-4 w-4 accent-[#0079fa]"
+                    />
+                    <span className="text-sm text-[#0b1f33]">Manter conectado</span>
+                  </label>
+                  <p className="-mt-1 text-xs text-muted-foreground">{rememberMe ? "Sessão ativa por 30 dias." : "Sessão ativa por 24 horas."}</p>
                   <Button className="w-full" size="lg" onClick={entrarNaConta}>Entrar</Button>
                 </div>
               ) : (
@@ -723,6 +881,16 @@ function Index() {
                     <span className="mb-2 block text-sm font-semibold text-foreground">Confirmação da senha</span>
                     <input type="password" value={cadastroConfirmacao} onChange={(e) => setCadastroConfirmacao(e.target.value)} placeholder="Repita a senha" className="field" />
                   </label>
+                  <label className="flex items-center gap-3 rounded-xl border border-[#dfe9f5] bg-[#f8fbff] px-3 py-2">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="h-4 w-4 accent-[#0079fa]"
+                    />
+                    <span className="text-sm text-[#0b1f33]">Manter conectado</span>
+                  </label>
+                  <p className="-mt-1 text-xs text-muted-foreground">{rememberMe ? "Sessão ativa por 30 dias." : "Sessão ativa por 24 horas."}</p>
                   <Button className="w-full" size="lg" onClick={criarConta}>Criar conta</Button>
                 </div>
               )}
@@ -761,6 +929,7 @@ function Index() {
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#0079fa]">Conta conectada</p>
             <p className="mt-2 text-base font-bold text-[#0b1f33]">{session.firstName}</p>
             <p className="text-xs text-muted-foreground">{session.celular}</p>
+            <p className="mt-2 text-[11px] font-medium text-[#0b1f33]">{session.rememberMe ? "Manter conectado: ativo (30 dias)" : "Logout automático em 24 horas"}</p>
           </div>
 
           <nav className="space-y-2">
@@ -789,24 +958,54 @@ function Index() {
                   {cartoes.map((cartao) => {
                     const tema = getCardTheme(cartao.cor);
                     return (
-                      <button
+                      <div
                         key={cartao.id}
                         ref={(element) => {
                           cardRefs.current[cartao.id] = element;
                         }}
-                        type="button"
+                        role="button"
+                        tabIndex={0}
                         onClick={() => selecionarCartao(cartao.id)}
-                        className={`min-w-full snap-center rounded-[22px] p-4 text-left text-white ${cartaoAtivoId === cartao.id ? "ring-2 ring-white/80" : "opacity-90"}`}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            selecionarCartao(cartao.id);
+                          }
+                        }}
+                        className={`min-w-full snap-center rounded-[22px] p-4 pb-5 text-left text-white ${cartaoAtivoId === cartao.id ? "ring-2 ring-white/80" : "opacity-90"}`}
                         style={{
                           background: `linear-gradient(135deg, ${tema.from} 0%, ${tema.via} 52%, ${tema.to} 100%)`,
                           boxShadow: `0 12px 24px ${tema.glow}`,
+                          minHeight: "220px",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
                         }}
                       >
-                        <div className="text-center text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">Saldo cartão digital</div>
-                        <div className="mt-2 text-center text-lg font-extrabold tracking-tight">{cartao.nome}</div>
-                        <div className="mt-6 text-3xl font-black tracking-tight">R$ {Number(cartao.saldo.replace(",", ".")) || 0}</div>
-                        <div className="mt-2 text-xs text-white/75">Atualizado em {new Date().toLocaleDateString("pt-BR")}</div>
-                      </button>
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 text-center text-[22px] font-extrabold tracking-tight sm:text-[27px]">{getNomeCartaoExibicao(cartao.nome)}</div>
+                        </div>
+                        <div className="mt-2">
+                          <div className="mb-1 text-[12px] font-bold uppercase tracking-[0.22em] text-white/75">Saldo</div>
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="text-[27px] font-black tracking-tight sm:text-[32px]">
+                              {cartao.saldoPrivado ?? true ? "R$ •••••" : `R$ ${Number(cartao.saldo.replace(",", ".")) || 0}`}
+                            </div>
+                            <button
+                              type="button"
+                              aria-label={cartao.saldoPrivado ?? true ? "Mostrar saldo" : "Ocultar saldo"}
+                              className="shrink-0 rounded-full border border-white/30 bg-black/10 p-1.5 text-white/90 transition hover:bg-black/20"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                alternarSaldoPrivado(cartao.id);
+                              }}
+                            >
+                              {cartao.saldoPrivado ?? true ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                            </button>
+                          </div>
+                        </div>
+                        <div className="mt-1 text-[11px] text-white/75">Atualizado em {new Date().toLocaleDateString("pt-BR")}</div>
+                      </div>
                     );
                   })}
                 </div>
@@ -821,16 +1020,16 @@ function Index() {
                 <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Resumo</p>
                 <div className="mt-3 space-y-3 text-sm text-[#0b1f33]">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-muted-foreground">Dias de aula</span>
-                    <strong>{calc.diasCobertos} dias</strong>
-                  </div>
-                  <div className="flex items-center justify-between gap-3">
                     <span className="text-muted-foreground">Total usado</span>
                     <strong>{brl(calc.totalGasto)}</strong>
                   </div>
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-muted-foreground">Sobra</span>
                     <strong>{brl(calc.sobra)}</strong>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-foreground">Recarga vence</span>
+                    <strong className="text-foreground">{calc.recarga ? new Date(`${calc.recarga}T00:00:00`).toLocaleDateString("pt-BR") : "—"}</strong>
                   </div>
                 </div>
               </div>
@@ -877,7 +1076,10 @@ function Index() {
 
               <div className="mb-7 rounded-xl border border-[#dfe9f5] bg-[#f7faff] p-4">
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="text-sm font-bold text-[#0b1f33]">Editar cartões</p>
+                  <div>
+                    <p className="text-sm font-bold text-[#0b1f33]">Editar cartões</p>
+                    <p className="text-xs text-muted-foreground">Escolha o cartão ativo e personalize cada nome e cor.</p>
+                  </div>
                   <Button type="button" variant="outline" onClick={adicionarCartao}>+ adicionar</Button>
                 </div>
                 <div className="space-y-3">
@@ -890,10 +1092,24 @@ function Index() {
                             type="text"
                             value={cartao.nome}
                             onChange={(e) => renomearCartao(cartao.id, e.target.value)}
+                            placeholder="Cartão"
                             className="field flex-1"
                           />
                           <Button type="button" variant={cartaoAtivoId === cartao.id ? "default" : "outline"} onClick={() => selecionarCartao(cartao.id)} size="sm">
                             {cartaoAtivoId === cartao.id ? "Ativo" : "Usar"}
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="border-red-200 text-red-600 hover:bg-red-50"
+                            onClick={() => {
+                              if (window.confirm("Deseja excluir este cartão?")) {
+                                removerCartao(cartao.id);
+                              }
+                            }}
+                          >
+                            Excluir
                           </Button>
                         </div>
 
@@ -954,8 +1170,8 @@ function Index() {
                 </div>
               </div>
 
-              <div className="mt-7 flex justify-end">
-                <Button size="lg" onClick={salvarConfiguracoes}>Salvar dados</Button>
+              <div className="mt-7 rounded-lg border border-dashed border-primary/20 bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
+                Suas alterações são salvas automaticamente enquanto você edita.
               </div>
             </section>
           </div>

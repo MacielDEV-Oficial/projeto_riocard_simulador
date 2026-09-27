@@ -55,10 +55,51 @@ type SharedAccount = {
   password: string;
 };
 
+type SessionResponse = {
+  firstName: string;
+  celular: string;
+  token: string;
+  expiresAt: number;
+};
+
 type SharedStore = {
   accounts: SharedAccount[];
   userData: Record<string, Record<string, unknown>>;
+  sessions: Record<string, { account: SharedAccount; expiresAt: number }>;
 };
+
+const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+
+function getSessionTtl(rememberMe: boolean) {
+  return rememberMe ? SESSION_TTL_MS * 30 : SESSION_TTL_MS;
+}
+
+function createSessionPayload(account: SharedAccount, token = crypto.randomUUID(), expiresAt = Date.now() + SESSION_TTL_MS): SessionResponse {
+  return {
+    firstName: account.firstName,
+    celular: account.celular,
+    token,
+    expiresAt,
+  };
+}
+
+function resolveBearerToken(request: Request) {
+  const authorization = request.headers.get("authorization") ?? "";
+  if (!authorization.toLowerCase().startsWith("bearer ")) return null;
+  return authorization.slice(7).trim();
+}
+
+function resolveSessionFromRequest(request: Request, store: SharedStore) {
+  const token = resolveBearerToken(request);
+  if (!token) return null;
+
+  const session = store.sessions[token];
+  if (!session || session.expiresAt <= Date.now()) {
+    return null;
+  }
+
+  return session.account;
+}
 
 const normalizePhone = (valor: string) => valor.replace(/\D/g, "");
 
@@ -81,7 +122,7 @@ async function ensureStore() {
   try {
     await fs.access(DATA_FILE);
   } catch {
-    const initialStore: SharedStore = { accounts: [], userData: {} };
+    const initialStore: SharedStore = { accounts: [], userData: {}, sessions: {} };
     await fs.writeFile(DATA_FILE, JSON.stringify(initialStore, null, 2), "utf-8");
   }
 }
@@ -94,9 +135,10 @@ async function readStore(): Promise<SharedStore> {
     return {
       accounts: Array.isArray(parsed.accounts) ? (parsed.accounts as SharedAccount[]) : [],
       userData: parsed.userData && typeof parsed.userData === "object" ? (parsed.userData as Record<string, Record<string, unknown>>) : {},
+      sessions: parsed.sessions && typeof parsed.sessions === "object" ? (parsed.sessions as Record<string, { account: SharedAccount; expiresAt: number; rememberMe: boolean }>) : {},
     };
   } catch {
-    return { accounts: [], userData: {} };
+    return { accounts: [], userData: {}, sessions: {} };
   }
 }
 
@@ -119,6 +161,7 @@ async function handleApi(request: Request): Promise<Response> {
     const firstName = String(body.firstName ?? "").trim();
     const celular = normalizePhone(String(body.celular ?? ""));
     const password = String(body.password ?? "");
+    const rememberMe = String(body.rememberMe ?? "true") === "true";
     const erroCelular = validarCelularParaCadastro(String(body.celular ?? ""));
 
     if (!firstName || !celular || !password) {
@@ -136,15 +179,19 @@ async function handleApi(request: Request): Promise<Response> {
     }
 
     const novaConta: SharedAccount = { firstName, celular, password };
+    const token = crypto.randomUUID();
+    const expiresAt = Date.now() + getSessionTtl(rememberMe);
     store.accounts.push(novaConta);
+    store.sessions[token] = { account: novaConta, expiresAt, rememberMe };
     await writeStore(store);
-    return jsonResponse({ ...novaConta }, 201);
+    return jsonResponse(createSessionPayload(novaConta, token, expiresAt), 201);
   }
 
   if (url.pathname === "/api/auth/login" && request.method === "POST") {
-    const body = (await request.json().catch(() => ({}))) as Partial<SharedAccount>;
+    const body = (await request.json().catch(() => ({}))) as Partial<SharedAccount> & { rememberMe?: boolean };
     const celular = normalizePhone(String(body.celular ?? ""));
     const password = String(body.password ?? "");
+    const rememberMe = body.rememberMe === true;
     const erroCelular = validarCelularParaCadastro(String(body.celular ?? ""));
 
     if (!celular || !password) {
@@ -161,7 +208,11 @@ async function handleApi(request: Request): Promise<Response> {
       return jsonResponse({ error: "Celular ou senha inválidos." }, 401);
     }
 
-    return jsonResponse({ ...conta });
+    const token = crypto.randomUUID();
+    const expiresAt = Date.now() + getSessionTtl(rememberMe);
+    store.sessions[token] = { account: conta, expiresAt, rememberMe };
+    await writeStore(store);
+    return jsonResponse(createSessionPayload(conta, token, expiresAt));
   }
 
   if (url.pathname === "/api/auth/check-phone" && request.method === "GET") {
@@ -183,6 +234,11 @@ async function handleApi(request: Request): Promise<Response> {
     }
 
     const store = await readStore();
+    const contaAutenticada = resolveSessionFromRequest(request, store);
+    if (!contaAutenticada || normalizePhone(contaAutenticada.celular) !== celular) {
+      return jsonResponse({ error: "Sessão inválida ou expirada." }, 401);
+    }
+
     store.userData[celular] = body.data;
     await writeStore(store);
     return jsonResponse({ ok: true, data: store.userData[celular] });
@@ -191,6 +247,11 @@ async function handleApi(request: Request): Promise<Response> {
   if (url.pathname.startsWith("/api/user-data") && request.method === "GET") {
     const celular = normalizePhone(new URL(request.url).searchParams.get("celular") ?? "");
     const store = await readStore();
+    const contaAutenticada = resolveSessionFromRequest(request, store);
+    if (!contaAutenticada || (celular && normalizePhone(contaAutenticada.celular) !== celular)) {
+      return jsonResponse({ error: "Sessão inválida ou expirada." }, 401);
+    }
+
     return jsonResponse({ data: celular ? store.userData[celular] ?? {} : {} });
   }
 
