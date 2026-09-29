@@ -826,7 +826,7 @@ function Index() {
           <div className="bg-[#f3f6fb] px-4 pb-8 pt-2">
             <div className="rounded-[22px] bg-white p-5 shadow-sm ring-1 ring-[#dfe9f5]">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#0079fa]">Acesso</p>
-              <h1 className="mt-2 text-2xl font-black text-[#0b1f33]">Entre na sua conta.........</h1>
+              <h1 className="mt-2 text-2xl font-black text-[#0b1f33]">Entre na sua conta</h1>
               <p className="mt-2 text-sm text-muted-foreground">Todos os dados do app ficam vinculados à conta logada.</p>
 
               <div className="mt-5 flex rounded-xl bg-[#eef5ff] p-1">
