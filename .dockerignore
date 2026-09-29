@@ -1,6 +1,12 @@
 node_modules
 .git
 .gitignore
+.env
+.env.*
+!.env.example
+.env.neon
+.neon
+.data
 .vscode
 .idea
 *.log
