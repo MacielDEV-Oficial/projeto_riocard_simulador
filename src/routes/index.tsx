@@ -347,7 +347,7 @@ function Index() {
         }
 
         const fallbackCard = criarCartaoPadrao("Cartão principal", {
-          saldo: String(salvo.saldo ?? "10000"),
+          saldo: String(salvo.saldo ?? "100"),
           tarifa: String(salvo.tarifa ?? "4.70"),
           viagens: String(salvo.viagens ?? "2"),
           inicio: String(salvo.inicio ?? iso(hoje)),
