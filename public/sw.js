@@ -30,19 +30,3 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-self.addEventListener("notificationclick", (event) => {
-  event.notification.close();
-
-  event.waitUntil(
-    self.clients
-      .matchAll({ type: "window", includeUncontrolled: true })
-      .then((clients) => {
-        if (clients.length > 0) {
-          const client = clients[0];
-          return client.focus();
-        }
-
-        return self.clients.openWindow("/");
-      }),
-  );
-});

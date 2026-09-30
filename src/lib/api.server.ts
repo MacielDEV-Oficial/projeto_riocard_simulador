@@ -328,6 +328,12 @@ async function handleAdmin(
         400,
       );
     }
+    if (id === user.id && role !== user.role) {
+      return jsonResponse(
+        { error: "Não é permitido alterar o próprio papel administrativo." },
+        400,
+      );
+    }
     try {
       const result = await getPool().query(
         `UPDATE users SET name = $1, email = $2, celular = $3,
