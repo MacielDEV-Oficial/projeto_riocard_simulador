@@ -425,7 +425,7 @@ function Index() {
     "--color-ring": temaApp.primary,
     "--color-brand-soft": temaApp.soft,
     "--color-brand-warm": temaApp.accent,
-    "--color-brand-warm-foreground": "#ffffff",
+    "--color-brand-warm-foreground": "#fffffff",
   } as CSSProperties;
 
   useEffect(() => {
