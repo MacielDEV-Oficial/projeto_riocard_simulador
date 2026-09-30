@@ -981,13 +981,42 @@ function Index() {
 
     if (permission === "granted") {
       toast.success("Notificações ativadas com sucesso!");
-      if (alertaRecarga) {
-        new Notification(alertaRecarga.titulo, {
-          body: alertaRecarga.mensagem,
-          icon: "/favicon.png",
-        });
+
+      const texto = alertaRecarga
+        ? `${alertaRecarga.titulo}: ${alertaRecarga.mensagem}`
+        : "Notificação de teste ativada no seu dispositivo.";
+
+      new Notification(alertaRecarga ? alertaRecarga.titulo : "Teste", {
+        body: texto,
+        icon: "/favicon.png",
+      });
+    }
+  };
+
+  const enviarNotificacaoTeste = async () => {
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      toast.error("Seu navegador não suporta notificações do site.");
+      return;
+    }
+
+    if (Notification.permission !== "granted") {
+      const permission = await Notification.requestPermission();
+      setNotificacaoPermissao(permission);
+
+      if (permission !== "granted") {
+        toast.warning(
+          "Permissão de notificação negada. Você pode habilitar depois no navegador.",
+        );
+        return;
       }
     }
+
+    new Notification("Teste", {
+      body: "Notificação de teste enviada com sucesso.",
+      icon: "/favicon.png",
+    });
+
+    toast.success("Notificação de teste enviada.");
   };
 
   const instalarNoCelular = async () => {
@@ -1060,6 +1089,7 @@ function Index() {
 
   if (!session) {
     return (
+      // Cor original do login: bg-[#f3f6fb]
       <main className="min-h-screen bg-[#f3f6fb] px-0 py-0">
         <div className="mx-auto min-h-screen max-w-md overflow-hidden bg-[#f3f6fb] shadow-none">
           <div className="px-4 pb-4 pt-6">
@@ -1756,6 +1786,36 @@ function Index() {
                   >
                     {alertaRecargaAtivo ? "Ligado" : "Desligado"}
                   </Button>
+                </div>
+              </div>
+
+              <div className="mt-7 rounded-xl border border-[#dfe9f5] bg-[#f7faff] p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-bold text-[#0b1f33]">
+                      Notificações do dispositivo
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {notificacaoPermissao === "granted"
+                        ? "Permissão concedida"
+                        : notificacaoPermissao === "denied"
+                          ? "Permissão negada"
+                          : notificacaoPermissao === "unsupported"
+                            ? "Navegador sem suporte"
+                            : "Pendente de permissão"}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    {notificacaoPermissao === "granted" ? (
+                      <Button type="button" onClick={enviarNotificacaoTeste}>
+                        Enviar teste
+                      </Button>
+                    ) : (
+                      <Button type="button" onClick={pedirPermissaoNotificacao}>
+                        Permitir
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
 
