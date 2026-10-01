@@ -75,6 +75,20 @@
   --ink: oklch(0.28 0.055 250);
 }
 
+:root[data-high-contrast="true"] {
+  --muted-foreground: #26364b;
+  --border: #536579;
+  --input: #475569;
+}
+
+:root[data-high-contrast="true"] .text-slate-400 {
+  color: #334155 !important;
+}
+
+:root[data-high-contrast="true"] .text-slate-500 {
+  color: #1e293b !important;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

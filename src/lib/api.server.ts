@@ -279,6 +279,93 @@ async function login(request: Request): Promise<Response> {
   }
 }
 
+async function changePassword(request: Request): Promise<Response> {
+  const user = await getAuthenticatedUser(request);
+  if (!user)
+    return jsonResponse({ error: "Sessão inválida ou expirada." }, 401);
+
+  const body: unknown = await request.json().catch(() => ({}));
+  const data = isJsonRecord(body) ? body : {};
+  const currentPassword = String(data.currentPassword ?? "");
+  const newPassword = String(data.newPassword ?? "");
+  const confirmPassword = String(data.confirmPassword ?? "");
+
+  if (!currentPassword || !newPassword || !confirmPassword)
+    return jsonResponse({ error: "Informe a senha atual e a nova senha." }, 400);
+  if (newPassword.length < 8 || newPassword.length > 72)
+    return jsonResponse(
+      { error: "A nova senha precisa ter entre 8 e 72 caracteres." },
+      400,
+    );
+  if (newPassword !== confirmPassword)
+    return jsonResponse({ error: "A nova senha e a confirmação não coincidem." }, 400);
+
+  const account = await getPool().query<{ password_hash: string }>(
+    "SELECT password_hash FROM users WHERE id = $1",
+    [user.id],
+  );
+  const storedHash = account.rows[0]?.password_hash;
+  if (!storedHash || !(await bcrypt.compare(currentPassword, storedHash))) {
+    return jsonResponse({ error: "A senha atual está incorreta." }, 401);
+  }
+
+  const passwordHash = await bcrypt.hash(newPassword, 12);
+  await getPool().query(
+    "UPDATE users SET password_hash = $1, updated_at = NOW() WHERE id = $2",
+    [passwordHash, user.id],
+  );
+  return jsonResponse({ ok: true, message: "Senha atualizada com sucesso." });
+}
+
+async function updateAccount(request: Request): Promise<Response> {
+  const user = await getAuthenticatedUser(request);
+  if (!user)
+    return jsonResponse({ error: "Sessão inválida ou expirada." }, 401);
+
+  const body: unknown = await request.json().catch(() => ({}));
+  const data = isJsonRecord(body) ? body : {};
+  const name = String(data.name ?? "").trim();
+  const email = normalizeEmail(String(data.email ?? ""));
+  const celular = normalizePhone(String(data.celular ?? ""));
+
+  if (!name || name.length > 120)
+    return jsonResponse(
+      { error: "Informe um nome válido (até 120 caracteres)." },
+      400,
+    );
+  if (invalidEmail(email))
+    return jsonResponse({ error: "Informe um email válido." }, 400);
+  if (celular.length !== 11)
+    return jsonResponse(
+      { error: "O celular precisa ter 11 dígitos, incluindo o DDD." },
+      400,
+    );
+
+  try {
+    const updated = await getPool().query<{
+      name: string;
+      email: string;
+      celular: string;
+    }>(
+      `UPDATE users SET name = $1, email = $2, celular = $3, updated_at = NOW()
+        WHERE id = $4 RETURNING name, email, celular`,
+      [name, email, celular, user.id],
+    );
+    const account = updated.rows[0];
+    if (!account)
+      return jsonResponse({ error: "Conta não encontrada." }, 404);
+
+    return jsonResponse({
+      user: publicUser({ ...user, ...account }),
+      message: "Dados da conta atualizados com sucesso.",
+    });
+  } catch (error) {
+    if (isPgUniqueViolation(error))
+      return jsonResponse({ error: "Email ou celular já está em uso." }, 409);
+    throw error;
+  }
+}
+
 async function handleAdmin(
   request: Request,
   user: AuthenticatedUser,
@@ -414,6 +501,10 @@ export async function handleApi(request: Request): Promise<Response> {
       return await register(request);
     if (pathname === "/api/auth/login" && method === "POST")
       return await login(request);
+    if (pathname === "/api/auth/change-password" && method === "POST")
+      return await changePassword(request);
+    if (pathname === "/api/auth/account" && method === "PUT")
+      return await updateAccount(request);
 
     if (pathname === "/api/auth/check-phone" && method === "GET") {
       const celular = normalizePhone(searchParams.get("celular") ?? "");

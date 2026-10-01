@@ -8,18 +8,19 @@ import {
   ArrowLeft,
   Eye,
   EyeOff,
+  History,
   House,
+  KeyRound,
   LogOut,
   Menu,
   Palette,
   Pencil,
   Plus,
   RefreshCw,
-  Search,
+  Settings,
   ShieldCheck,
   Trash2,
   UserRound,
-  Users,
   Wifi,
   WalletCards,
   X,
@@ -93,6 +94,7 @@ const CARD_THEMES = {
     via: "#0080ff",
     to: "#0069e8",
     glow: "rgba(0, 121, 250, 0.35)",
+    decoration: null,
   },
   rosa: {
     name: "Rosa",
@@ -100,6 +102,7 @@ const CARD_THEMES = {
     via: "#ff2a8e",
     to: "#d8006d",
     glow: "rgba(255, 0, 140, 0.35)",
+    decoration: null,
   },
   verde: {
     name: "Verde",
@@ -107,6 +110,7 @@ const CARD_THEMES = {
     via: "#1ead6c",
     to: "#0f8f53",
     glow: "rgba(22, 163, 74, 0.35)",
+    decoration: null,
   },
   roxo: {
     name: "Roxo",
@@ -114,6 +118,7 @@ const CARD_THEMES = {
     via: "#7c3aed",
     to: "#5b2ecf",
     glow: "rgba(124, 58, 237, 0.35)",
+    decoration: null,
   },
   laranja: {
     name: "Laranja",
@@ -121,6 +126,7 @@ const CARD_THEMES = {
     via: "#ff8a3d",
     to: "#e66a00",
     glow: "rgba(234, 88, 12, 0.35)",
+    decoration: null,
   },
   cinza: {
     name: "Cinza",
@@ -128,10 +134,293 @@ const CARD_THEMES = {
     via: "#475467",
     to: "#344054",
     glow: "rgba(71, 84, 103, 0.35)",
+    decoration: null,
+  },
+  natal: {
+    name: "Natal",
+    from: "#168653",
+    via: "#0f6844",
+    to: "#0b4938",
+    glow: "rgba(22, 101, 52, 0.4)",
+    decoration: "natal",
+  },
+  carnaval: {
+    name: "Carnaval",
+    from: "#7c3aed",
+    via: "#c026d3",
+    to: "#db2777",
+    glow: "rgba(192, 38, 211, 0.4)",
+    decoration: "carnaval",
+  },
+  praia: {
+    name: "Praia",
+    from: "#0e9aa7",
+    via: "#087eaa",
+    to: "#075985",
+    glow: "rgba(14, 116, 144, 0.4)",
+    decoration: "praia",
+  },
+  espaco: {
+    name: "Espaço",
+    from: "#4c1d95",
+    via: "#312e81",
+    to: "#111827",
+    glow: "rgba(76, 29, 149, 0.45)",
+    decoration: "espaco",
+  },
+  outono: {
+    name: "Outono",
+    from: "#c2410c",
+    via: "#9a3412",
+    to: "#431407",
+    glow: "rgba(194, 65, 12, 0.4)",
+    decoration: "outono",
+  },
+  flores: {
+    name: "Flores",
+    from: "#ec4899",
+    via: "#be185d",
+    to: "#831843",
+    glow: "rgba(236, 72, 153, 0.4)",
+    decoration: "flores",
+  },
+  montanha: {
+    name: "Montanha",
+    from: "#64748b",
+    via: "#475569",
+    to: "#1e293b",
+    glow: "rgba(100, 116, 139, 0.4)",
+    decoration: "montanha",
+  },
+  floresta: {
+    name: "Floresta",
+    from: "#22c55e",
+    via: "#15803d",
+    to: "#14532d",
+    glow: "rgba(34, 197, 94, 0.35)",
+    decoration: "floresta",
+  },
+  oceano: {
+    name: "Oceano",
+    from: "#06b6d4",
+    via: "#0e7490",
+    to: "#164e63",
+    glow: "rgba(6, 182, 212, 0.4)",
+    decoration: "oceano",
+  },
+  aurora: {
+    name: "Aurora",
+    from: "#34d399",
+    via: "#0f766e",
+    to: "#312e81",
+    glow: "rgba(52, 211, 153, 0.4)",
+    decoration: "aurora",
+  },
+  galaxia: {
+    name: "Galáxia",
+    from: "#a855f7",
+    via: "#6d28d9",
+    to: "#1e1b4b",
+    glow: "rgba(168, 85, 247, 0.4)",
+    decoration: "galaxia",
+  },
+  neon: {
+    name: "Neon",
+    from: "#22d3ee",
+    via: "#7c3aed",
+    to: "#db2777",
+    glow: "rgba(34, 211, 238, 0.4)",
+    decoration: "neon",
+  },
+  arcade: {
+    name: "Arcade",
+    from: "#4f46e5",
+    via: "#7e22ce",
+    to: "#111827",
+    glow: "rgba(79, 70, 229, 0.4)",
+    decoration: "arcade",
+  },
+  musica: {
+    name: "Música",
+    from: "#f472b6",
+    via: "#9333ea",
+    to: "#4c1d95",
+    glow: "rgba(147, 51, 234, 0.4)",
+    decoration: "musica",
+  },
+  futebol: {
+    name: "Futebol",
+    from: "#22c55e",
+    via: "#16a34a",
+    to: "#14532d",
+    glow: "rgba(22, 163, 74, 0.4)",
+    decoration: "futebol",
+  },
+  basquete: {
+    name: "Basquete",
+    from: "#fb923c",
+    via: "#ea580c",
+    to: "#7c2d12",
+    glow: "rgba(234, 88, 12, 0.4)",
+    decoration: "basquete",
+  },
+  corrida: {
+    name: "Corrida",
+    from: "#facc15",
+    via: "#f97316",
+    to: "#be123c",
+    glow: "rgba(249, 115, 22, 0.4)",
+    decoration: "corrida",
+  },
+  pets: {
+    name: "Pets",
+    from: "#c084fc",
+    via: "#8b5cf6",
+    to: "#4c1d95",
+    glow: "rgba(139, 92, 246, 0.4)",
+    decoration: "pets",
+  },
+  cafe: {
+    name: "Café",
+    from: "#a16207",
+    via: "#78350f",
+    to: "#451a03",
+    glow: "rgba(161, 98, 7, 0.4)",
+    decoration: "cafe",
+  },
+  doces: {
+    name: "Doces",
+    from: "#f9a8d4",
+    via: "#ec4899",
+    to: "#9333ea",
+    glow: "rgba(236, 72, 153, 0.4)",
+    decoration: "doces",
+  },
+  frutas: {
+    name: "Frutas",
+    from: "#facc15",
+    via: "#84cc16",
+    to: "#15803d",
+    glow: "rgba(132, 204, 22, 0.4)",
+    decoration: "frutas",
+  },
+  borboletas: {
+    name: "Borboletas",
+    from: "#c084fc",
+    via: "#7c3aed",
+    to: "#2563eb",
+    glow: "rgba(124, 58, 237, 0.4)",
+    decoration: "borboletas",
+  },
+  ceu: {
+    name: "Céu estrelado",
+    from: "#60a5fa",
+    via: "#2563eb",
+    to: "#172554",
+    glow: "rgba(37, 99, 235, 0.4)",
+    decoration: "ceu",
+  },
+  geometrico: {
+    name: "Geométrico",
+    from: "#14b8a6",
+    via: "#4f46e5",
+    to: "#312e81",
+    glow: "rgba(79, 70, 229, 0.4)",
+    decoration: "geometrico",
   },
 } as const;
 
+type CardDecorationKey =
+  | "natal"
+  | "carnaval"
+  | "praia"
+  | "espaco"
+  | "outono"
+  | "flores"
+  | "montanha"
+  | "floresta"
+  | "oceano"
+  | "aurora"
+  | "galaxia"
+  | "neon"
+  | "arcade"
+  | "musica"
+  | "futebol"
+  | "basquete"
+  | "corrida"
+  | "pets"
+  | "cafe"
+  | "doces"
+  | "frutas"
+  | "borboletas"
+  | "ceu"
+  | "geometrico";
 type CardColorKey = keyof typeof CARD_THEMES;
+const CARD_THEME_DESCRIPTIONS: Record<CardColorKey, string> = {
+  azul: "Azul vibrante para um visual clássico.",
+  rosa: "Degradê rosa marcante e moderno.",
+  verde: "Tons verdes frescos e naturais.",
+  roxo: "Roxo intenso com acabamento elegante.",
+  laranja: "Laranja quente, energético e luminoso.",
+  cinza: "Cinza urbano com visual discreto.",
+  natal: "Árvore iluminada e detalhes festivos.",
+  carnaval: "Máscara colorida e brilho de festa.",
+  praia: "Sol dourado e ondas em clima tropical.",
+  espaco: "Planeta e estrelas em um céu profundo.",
+  outono: "Folhas quentes e tons aconchegantes.",
+  flores: "Flores delicadas em um jardim vibrante.",
+  montanha: "Picos de montanha e ar de aventura.",
+  floresta: "Folhagens e natureza em tons verdes.",
+  oceano: "Vida marinha em águas profundas.",
+  aurora: "Faixas de luz inspiradas na aurora boreal.",
+  galaxia: "Nebulosas e estrelas distantes.",
+  neon: "Brilho neon com energia futurista.",
+  arcade: "Clima retrô de fliperama e pixels.",
+  musica: "Notas musicais para levar o ritmo junto.",
+  futebol: "Tema de futebol com bola e gramado.",
+  basquete: "Bola e energia das quadras.",
+  corrida: "Velocidade, bandeirada e movimento.",
+  pets: "Patinhas e carinho pelos animais.",
+  cafe: "Tons de café para uma pausa tranquila.",
+  doces: "Doces coloridos em tons açucarados.",
+  frutas: "Frutas frescas e cores tropicais.",
+  borboletas: "Borboletas leves em voo.",
+  ceu: "Lua e estrelas sob o céu noturno.",
+  geometrico: "Formas geométricas contemporâneas.",
+};
+
+const CARD_DECORATION_SYMBOLS: Record<CardDecorationKey, string> = {
+  natal: "❄",
+  carnaval: "✦",
+  praia: "☀",
+  espaco: "✦",
+  outono: "🍂",
+  flores: "🌸",
+  montanha: "⛰",
+  floresta: "🌿",
+  oceano: "🐚",
+  aurora: "🌌",
+  galaxia: "🌠",
+  neon: "💠",
+  arcade: "👾",
+  musica: "♫",
+  futebol: "⚽",
+  basquete: "🏀",
+  corrida: "🏁",
+  pets: "🐾",
+  cafe: "☕",
+  doces: "🍭",
+  frutas: "🍊",
+  borboletas: "🦋",
+  ceu: "✨",
+  geometrico: "◈",
+};
+const LEGACY_CARD_THEME_MAP: Record<string, CardColorKey> = {
+  vermelho: "natal",
+  turquesa: "praia",
+  dourado: "carnaval",
+  grafite: "espaco",
+};
 
 const APP_THEMES = {
   oceano: {
@@ -237,8 +526,55 @@ const APP_THEMES = {
 } as const;
 
 type AppThemeKey = keyof typeof APP_THEMES;
-type AppPage = "home" | "calendar" | "settings" | "appearance" | "admin";
+type AppPage =
+  | "home"
+  | "profile"
+  | "calendar"
+  | "history"
+  | "account-data"
+  | "accessibility"
+  | "edit-card"
+  | "card-themes"
+  | "settings"
+  | "appearance"
+  | "security"
+  | "reset-password";
+const APP_PAGE_HISTORY_KEY = "riocardPlannerPage";
+const APP_PAGE_HISTORY_PREVIOUS_KEY = "riocardPlannerPreviousPage";
 const DEFAULT_APP_THEME: AppThemeKey = "oceano";
+
+const isAppPage = (value: unknown): value is AppPage =>
+  value === "home" ||
+  value === "profile" ||
+  value === "calendar" ||
+  value === "history" ||
+  value === "account-data" ||
+  value === "accessibility" ||
+  value === "edit-card" ||
+  value === "card-themes" ||
+  value === "settings" ||
+  value === "appearance" ||
+  value === "security" ||
+  value === "reset-password";
+
+type SecuritySettings = {
+  confirmSensitiveActions: boolean;
+};
+
+const DEFAULT_SECURITY_SETTINGS: SecuritySettings = {
+  confirmSensitiveActions: true,
+};
+
+type TextSize = "normal" | "large" | "larger";
+type AccessibilitySettings = {
+  textSize: TextSize;
+  highContrast: boolean;
+};
+
+const DEFAULT_ACCESSIBILITY_SETTINGS: AccessibilitySettings = {
+  textSize: "normal",
+  highContrast: false,
+};
 
 type Account = {
   id: string;
@@ -247,15 +583,6 @@ type Account = {
   celular: string;
   role: "client" | "admin";
   rememberMe?: boolean;
-};
-
-type AdminUser = {
-  id: string;
-  name: string;
-  email: string;
-  celular: string;
-  role: "client" | "admin";
-  created_at: string;
 };
 
 type Cartao = {
@@ -273,6 +600,8 @@ type SavedUserData = Partial<Cartao> & {
   cards?: unknown;
   activeCardId?: unknown;
   appearanceTheme?: unknown;
+  securitySettings?: unknown;
+  accessibilitySettings?: unknown;
 };
 
 const getCardTheme = (cor?: string) => {
@@ -280,8 +609,108 @@ const getCardTheme = (cor?: string) => {
   return CARD_THEMES[key];
 };
 
+const normalizeCardTheme = (value: unknown): CardColorKey => {
+  const key = String(value ?? "");
+  if (key in CARD_THEMES) return key as CardColorKey;
+  return LEGACY_CARD_THEME_MAP[key] ?? "azul";
+};
+
+function CardDecoration({ type }: { type: CardDecorationKey }) {
+  if (!(["natal", "carnaval", "praia", "espaco"] as CardDecorationKey[]).includes(type)) {
+    return (
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-3 top-1/2 z-0 -translate-y-1/2 text-[76px] leading-none opacity-40 drop-shadow-sm"
+      >
+        {CARD_DECORATION_SYMBOLS[type]}
+      </span>
+    );
+  }
+
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 120 120"
+      className="pointer-events-none absolute right-2 top-[44%] z-0 size-28 -translate-y-1/2 opacity-35 drop-shadow-sm"
+    >
+      {type === "natal" ? (
+        <>
+          <path d="M60 12 43 35h11L36 56h13L31 78h58L71 56h13L66 35h11L60 12Z" fill="#e8fff1" />
+          <rect x="55" y="78" width="10" height="14" rx="2" fill="#f5c66b" />
+          <circle cx="60" cy="37" r="3.5" fill="#ffd166" />
+          <circle cx="48" cy="57" r="3" fill="#fb7185" />
+          <circle cx="70" cy="65" r="3" fill="#facc15" />
+          <path d="m24 27 2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Zm70 36 2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Z" fill="#fff" />
+        </>
+      ) : null}
+      {type === "carnaval" ? (
+        <>
+          <path d="M30 57c8-10 17-10 25-2 3-4 7-6 11-6s8 2 11 6c8-8 17-8 25 2-5 18-16 27-25 20-4-3-7-7-11-7s-7 4-11 7c-9 7-20-2-25-20Z" fill="#fde68a" />
+          <path d="M53 56c2 6 4 9 7 9s5-3 7-9" fill="none" stroke="#7c3aed" strokeWidth="3" />
+          <circle cx="30" cy="32" r="5" fill="#f9a8d4" />
+          <circle cx="87" cy="29" r="4" fill="#67e8f9" />
+          <circle cx="94" cy="83" r="5" fill="#86efac" />
+          <path d="m49 20 4 10m22 1 6-12M22 79l10-4m48 26 3-11" stroke="#fff" strokeLinecap="round" strokeWidth="4" />
+        </>
+      ) : null}
+      {type === "praia" ? (
+        <>
+          <circle cx="78" cy="38" r="19" fill="#fde68a" />
+          <path d="M20 69c12-10 23-10 35 0s23 10 35 0" fill="none" stroke="#cffafe" strokeLinecap="round" strokeWidth="6" />
+          <path d="M14 84c12-10 23-10 35 0s23 10 35 0 15-8 22-4" fill="none" stroke="#67e8f9" strokeLinecap="round" strokeWidth="5" />
+          <path d="M68 15V9m24 10 5-5m-38 5-5-5m51 23h7" stroke="#fff3c4" strokeLinecap="round" strokeWidth="3" />
+        </>
+      ) : null}
+      {type === "espaco" ? (
+        <>
+          <ellipse cx="64" cy="62" rx="42" ry="15" fill="none" stroke="#f5d0fe" strokeWidth="4" transform="rotate(-25 64 62)" />
+          <circle cx="64" cy="58" r="23" fill="#c4b5fd" />
+          <path d="M47 54c8-8 18-10 31-5M48 65c8 5 17 6 28 3" fill="none" stroke="#8b5cf6" strokeLinecap="round" strokeWidth="4" />
+          <circle cx="22" cy="35" r="3" fill="#fff" />
+          <circle cx="96" cy="33" r="2.5" fill="#fde68a" />
+          <circle cx="93" cy="92" r="3" fill="#fff" />
+          <path d="m30 78 2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Z" fill="#fff" />
+        </>
+      ) : null}
+    </svg>
+  );
+}
+
+function CardThemePreview({ themeKey }: { themeKey: CardColorKey }) {
+  const theme = CARD_THEMES[themeKey];
+
+  return (
+    <div
+      aria-hidden="true"
+      className="relative isolate h-32 overflow-hidden rounded-[16px] p-3 text-white shadow-inner"
+      style={{
+        background: `linear-gradient(135deg, ${theme.from} 0%, ${theme.via} 48%, ${theme.to} 100%)`,
+      }}
+    >
+      <span className="relative z-10 text-sm font-black italic tracking-tight drop-shadow-sm">
+        RioCard <span className="font-semibold">Mais</span>
+      </span>
+      {theme.decoration ? <CardDecoration type={theme.decoration} /> : null}
+      <span className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between text-[9px] font-bold tracking-[0.16em] text-white/75">
+        <span>•••• &nbsp;•••• &nbsp;••••</span>
+        <Wifi className="size-4 rotate-90" />
+      </span>
+    </div>
+  );
+}
+
 const getNomeCartaoExibicao = (nome?: string) =>
   (nome ?? "").trim() || "Cartão";
+
+const formatarNomeCompleto = (nome: string) =>
+  nome
+    .trim()
+    .toLocaleLowerCase("pt-BR")
+    .replace(
+      /(^|[\s'-])(\p{L})/gu,
+      (_match, separador: string, letra: string) =>
+        `${separador}${letra.toLocaleUpperCase("pt-BR")}`,
+    );
 
 const normalizePhone = (valor: string) => valor.replace(/\D/g, "");
 
@@ -351,22 +780,33 @@ function Index() {
   const [viagens, setViagens] = useState("2");
   const [inicio, setInicio] = useState(iso(hoje));
   const [page, setPage] = useState<AppPage>("home");
-  const [menuOpen, setMenuOpen] = useState(false);
   const [mesRef, setMesRef] = useState(
     new Date(hoje.getFullYear(), hoje.getMonth(), 1),
   );
   const [cartoes, setCartoes] = useState<Cartao[]>([]);
   const [cartaoAtivoId, setCartaoAtivoId] = useState<string | null>(null);
+  const [abaTemasCartao, setAbaTemasCartao] = useState<"standard" | "decorative">("decorative");
+  const [menuOpen, setMenuOpen] = useState(false);
   const [temaAparencia, setTemaAparencia] =
     useState<AppThemeKey>(DEFAULT_APP_THEME);
   const [authVerificando, setAuthVerificando] = useState(true);
   const [dadosUsuarioCarregados, setDadosUsuarioCarregados] = useState(false);
   const [temaSalvando, setTemaSalvando] = useState<AppThemeKey | null>(null);
+  const [confirmarAcoesSensiveis, setConfirmarAcoesSensiveis] = useState(
+    DEFAULT_SECURITY_SETTINGS.confirmSensitiveActions,
+  );
+  const [segurancaSalvando, setSegurancaSalvando] = useState(false);
+  const [acessibilidade, setAcessibilidade] = useState<AccessibilitySettings>(
+    DEFAULT_ACCESSIBILITY_SETTINGS,
+  );
+  const [acessibilidadeSalvando, setAcessibilidadeSalvando] = useState(false);
   const [cartaoAcoesId, setCartaoAcoesId] = useState<string | null>(null);
   const [novoCartaoAberto, setNovoCartaoAberto] = useState(false);
   const [novoCartaoIdEditando, setNovoCartaoIdEditando] = useState<string | null>(null);
   const [novoCartaoNome, setNovoCartaoNome] = useState("");
   const [novoCartaoCor, setNovoCartaoCor] = useState<CardColorKey>("azul");
+  const [paginaAnteriorTemasCartao, setPaginaAnteriorTemasCartao] =
+    useState<AppPage>("home");
   const [novoCartaoSaldo, setNovoCartaoSaldo] = useState("100");
   const [novoCartaoTarifa, setNovoCartaoTarifa] = useState("4.70");
   const [novoCartaoViagens, setNovoCartaoViagens] = useState("2");
@@ -383,18 +823,21 @@ function Index() {
   const [cadastroCelular, setCadastroCelular] = useState("");
   const [cadastroSenha, setCadastroSenha] = useState("");
   const [cadastroConfirmacao, setCadastroConfirmacao] = useState("");
+  const [dadosContaNome, setDadosContaNome] = useState("");
+  const [dadosContaEmail, setDadosContaEmail] = useState("");
+  const [dadosContaCelular, setDadosContaCelular] = useState("");
+  const [dadosContaSalvando, setDadosContaSalvando] = useState(false);
+  const [dadosContaErro, setDadosContaErro] = useState("");
   const [authError, setAuthError] = useState("");
   const [celularEmUso, setCelularEmUso] = useState(false);
   const [emailEmUso, setEmailEmUso] = useState(false);
-  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
-  const [adminError, setAdminError] = useState("");
-  const [adminLoading, setAdminLoading] = useState(false);
-  const [adminBusca, setAdminBusca] = useState("");
-  const [adminFiltro, setAdminFiltro] = useState<"all" | "client" | "admin">(
-    "all",
-  );
-  const [adminAcaoId, setAdminAcaoId] = useState<string | null>(null);
   const [rememberMe, setRememberMe] = useState(true);
+  const [senhaAtual, setSenhaAtual] = useState("");
+  const [novaSenha, setNovaSenha] = useState("");
+  const [confirmacaoNovaSenha, setConfirmacaoNovaSenha] = useState("");
+  const [senhaResetError, setSenhaResetError] = useState("");
+  const [senhaResetSuccess, setSenhaResetSuccess] = useState("");
+  const [senhaResetLoading, setSenhaResetLoading] = useState(false);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const carouselInicializadoRef = useRef(false);
@@ -403,7 +846,7 @@ function Index() {
   const ignorarClickAposPressaoRef = useRef(false);
   const dadosUsuarioRequestRef = useRef(0);
   const temaApp = APP_THEMES[temaAparencia];
-  const homeMenuBackground = `linear-gradient(110deg, ${temaApp.from}, ${temaApp.to})`;
+  const homeMenuBackground = "#f3f7fc";
   const estilosTemaApp = {
     backgroundColor: temaApp.background,
     "--primary": temaApp.primary,
@@ -442,15 +885,50 @@ function Index() {
   }, []);
 
   useEffect(() => {
-    if (!menuOpen) return;
+    const root = document.documentElement;
+    const previousFontSize = root.style.fontSize;
+    const previousContrast = root.getAttribute("data-high-contrast");
+    const fontSize =
+      acessibilidade.textSize === "large"
+        ? "18px"
+        : acessibilidade.textSize === "larger"
+          ? "20px"
+          : "";
 
-    const fecharComEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
+    root.style.fontSize = fontSize;
+    root.setAttribute("data-high-contrast", String(acessibilidade.highContrast));
+
+    return () => {
+      root.style.fontSize = previousFontSize;
+      if (previousContrast === null) {
+        root.removeAttribute("data-high-contrast");
+      } else {
+        root.setAttribute("data-high-contrast", previousContrast);
+      }
+    };
+  }, [acessibilidade]);
+
+  useEffect(() => {
+    window.history.replaceState(
+      {
+        ...window.history.state,
+        [APP_PAGE_HISTORY_KEY]: "home",
+        [APP_PAGE_HISTORY_PREVIOUS_KEY]: null,
+      },
+      "",
+      window.location.href,
+    );
+
+    const restaurarPaginaAnterior = (event: PopStateEvent) => {
+      const paginaAnterior = event.state?.[APP_PAGE_HISTORY_KEY];
+      if (isAppPage(paginaAnterior)) {
+        setPage(paginaAnterior);
+      }
     };
 
-    window.addEventListener("keydown", fecharComEscape);
-    return () => window.removeEventListener("keydown", fecharComEscape);
-  }, [menuOpen]);
+    window.addEventListener("popstate", restaurarPaginaAnterior);
+    return () => window.removeEventListener("popstate", restaurarPaginaAnterior);
+  }, []);
 
   useEffect(
     () => () => {
@@ -462,7 +940,7 @@ function Index() {
   );
 
   useEffect(() => {
-    if (!novoCartaoAberto) return;
+    if (!novoCartaoAberto || page === "card-themes") return;
 
     const fecharComEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape" && !salvandoNovoCartao) {
@@ -472,7 +950,18 @@ function Index() {
 
     window.addEventListener("keydown", fecharComEscape);
     return () => window.removeEventListener("keydown", fecharComEscape);
-  }, [novoCartaoAberto, salvandoNovoCartao]);
+  }, [novoCartaoAberto, salvandoNovoCartao, page]);
+
+  useEffect(() => {
+    if (page !== "card-themes") return;
+
+    const fecharComEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") window.history.back();
+    };
+
+    window.addEventListener("keydown", fecharComEscape);
+    return () => window.removeEventListener("keydown", fecharComEscape);
+  }, [page]);
 
   useEffect(() => {
     // Remove only the obsolete client-side auth artifacts; planner data can be migrated below.
@@ -537,10 +1026,7 @@ function Index() {
             inicio: String(card.inicio ?? iso(hoje)),
             saldoPrivado:
               typeof card.saldoPrivado === "boolean" ? card.saldoPrivado : true,
-            cor:
-              typeof card.cor === "string" && card.cor in CARD_THEMES
-                ? (card.cor as CardColorKey)
-                : "azul",
+            cor: normalizeCardTheme(card.cor),
           }));
         }
 
@@ -600,6 +1086,31 @@ function Index() {
             ? (savedTheme as AppThemeKey)
             : DEFAULT_APP_THEME,
         );
+        const savedSecuritySettings =
+          typeof salvo.securitySettings === "object" && salvo.securitySettings !== null
+            ? (salvo.securitySettings as Partial<SecuritySettings>)
+            : {};
+        setConfirmarAcoesSensiveis(
+          typeof savedSecuritySettings.confirmSensitiveActions === "boolean"
+            ? savedSecuritySettings.confirmSensitiveActions
+            : DEFAULT_SECURITY_SETTINGS.confirmSensitiveActions,
+        );
+        const savedAccessibilitySettings =
+          typeof salvo.accessibilitySettings === "object" &&
+          salvo.accessibilitySettings !== null
+            ? (salvo.accessibilitySettings as Partial<AccessibilitySettings>)
+            : {};
+        setAcessibilidade({
+          textSize:
+            savedAccessibilitySettings.textSize === "large" ||
+            savedAccessibilitySettings.textSize === "larger"
+              ? savedAccessibilitySettings.textSize
+              : DEFAULT_ACCESSIBILITY_SETTINGS.textSize,
+          highContrast:
+            typeof savedAccessibilitySettings.highContrast === "boolean"
+              ? savedAccessibilitySettings.highContrast
+              : DEFAULT_ACCESSIBILITY_SETTINGS.highContrast,
+        });
         aplicarCartaoAtivo(
           normalizedCards.find((item) => item.id === activeId) ??
             normalizedCards[0] ??
@@ -627,6 +1138,7 @@ function Index() {
       setTemaAparencia(DEFAULT_APP_THEME);
       setCartoes([]);
       setCartaoAtivoId(null);
+      setAcessibilidade(DEFAULT_ACCESSIBILITY_SETTINGS);
       setSaldo("100");
       setTarifa("4.70");
       setViagens("2");
@@ -635,6 +1147,7 @@ function Index() {
     }
     setDadosUsuarioCarregados(false);
     setTemaAparencia(DEFAULT_APP_THEME);
+    setAcessibilidade(DEFAULT_ACCESSIBILITY_SETTINGS);
     setCartoes([]);
     setCartaoAtivoId(null);
     setSaldo("100");
@@ -643,89 +1156,6 @@ function Index() {
     setInicio(iso(hoje));
     void carregarDadosDoUsuario(session);
   }, [carregarDadosDoUsuario, session, hoje]);
-
-  const carregarUsuariosAdmin = useCallback(async () => {
-    setAdminLoading(true);
-    try {
-      const result = await apiRequest<{ users: AdminUser[] }>("/admin/users");
-      setAdminUsers(
-        result.users.map((usuario) => ({
-          ...usuario,
-          id: String(usuario.id),
-          created_at: String(usuario.created_at),
-        })),
-      );
-      setAdminError("");
-    } catch (error) {
-      setAdminError(
-        error instanceof Error
-          ? error.message
-          : "Não foi possível carregar usuários.",
-      );
-    } finally {
-      setAdminLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (page === "admin" && session?.role === "admin")
-      void carregarUsuariosAdmin();
-  }, [carregarUsuariosAdmin, page, session]);
-
-  const atualizarRoleUsuario = async (
-    usuario: AdminUser,
-    role: AdminUser["role"],
-  ) => {
-    if (usuario.id === session?.id) {
-      toast.error("Não é possível alterar sua própria permissão de administrador.");
-      return;
-    }
-
-    setAdminAcaoId(usuario.id);
-    try {
-      await apiRequest(`/admin/users/${usuario.id}`, {
-        method: "PUT",
-        body: JSON.stringify({
-          name: usuario.name,
-          email: usuario.email,
-          celular: usuario.celular,
-          role,
-        }),
-      });
-      await carregarUsuariosAdmin();
-      toast.success("Permissão atualizada.");
-    } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Não foi possível atualizar a permissão.",
-      );
-    } finally {
-      setAdminAcaoId(null);
-    }
-  };
-
-  const excluirUsuarioAdmin = async (usuario: AdminUser) => {
-    if (usuario.id === session?.id) {
-      toast.error("Não é permitido excluir sua própria conta administrativa.");
-      return;
-    }
-    if (!window.confirm(`Excluir a conta de ${usuario.name}?`)) return;
-    setAdminAcaoId(usuario.id);
-    try {
-      await apiRequest(`/admin/users/${usuario.id}`, { method: "DELETE" });
-      await carregarUsuariosAdmin();
-      toast.success("Conta removida.");
-    } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Não foi possível excluir a conta.",
-      );
-    } finally {
-      setAdminAcaoId(null);
-    }
-  };
 
   useEffect(() => {
     const celular = normalizePhone(cadastroCelular);
@@ -792,6 +1222,10 @@ function Index() {
             cards: proximoEstado,
             activeCardId: cartaoAtivoId,
             appearanceTheme: temaAparencia,
+            securitySettings: {
+              confirmSensitiveActions: confirmarAcoesSensiveis,
+            },
+            accessibilitySettings: acessibilidade,
           },
         }),
       }).catch((error: unknown) => {
@@ -807,8 +1241,104 @@ function Index() {
   const abrirPagina = (
     novaPagina: AppPage,
   ) => {
+    if (window.history.state?.[APP_PAGE_HISTORY_KEY] !== novaPagina) {
+      window.history.pushState(
+        {
+          ...window.history.state,
+          [APP_PAGE_HISTORY_KEY]: novaPagina,
+          [APP_PAGE_HISTORY_PREVIOUS_KEY]:
+            window.history.state?.[APP_PAGE_HISTORY_KEY] ?? page,
+        },
+        "",
+        window.location.href,
+      );
+    }
     setPage(novaPagina);
-    setMenuOpen(false);
+  };
+
+  const abrirDadosDaConta = () => {
+    if (!session) return;
+    setDadosContaNome(session.firstName);
+    setDadosContaEmail(session.email);
+    setDadosContaCelular(formatarCelular(session.celular));
+    setDadosContaErro("");
+    abrirPagina("account-data");
+  };
+
+  const salvarDadosDaConta = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!session || dadosContaSalvando) return;
+
+    const nome = dadosContaNome.trim();
+    const email = dadosContaEmail.trim().toLowerCase();
+    const celular = normalizePhone(dadosContaCelular);
+
+    if (!nome || !email || !celular) {
+      setDadosContaErro("Preencha nome, email e celular.");
+      return;
+    }
+    if (nome.length > 120) {
+      setDadosContaErro("O nome deve ter até 120 caracteres.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setDadosContaErro("Informe um email válido.");
+      return;
+    }
+    const erroCelular = validarCelular(dadosContaCelular);
+    if (erroCelular) {
+      setDadosContaErro(erroCelular);
+      return;
+    }
+
+    setDadosContaSalvando(true);
+    setDadosContaErro("");
+    try {
+      const response = await apiRequest<{ user: Account; message?: string }>(
+        "/auth/account",
+        {
+          method: "PUT",
+          body: JSON.stringify({ name: nome, email, celular }),
+        },
+      );
+      setSession((current) =>
+        current
+          ? {
+              ...current,
+              ...response.user,
+              ...(current.rememberMe === undefined
+                ? {}
+                : { rememberMe: current.rememberMe }),
+            }
+          : current,
+      );
+      setDadosContaNome(response.user.firstName);
+      setDadosContaEmail(response.user.email);
+      setDadosContaCelular(formatarCelular(response.user.celular));
+      toast.success(response.message ?? "Dados da conta atualizados.");
+    } catch (error) {
+      setDadosContaErro(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível atualizar os dados da conta.",
+      );
+    } finally {
+      setDadosContaSalvando(false);
+    }
+  };
+
+  const abrirTemasDoCartao = (paginaOrigem: "home" | "edit-card") => {
+    setPaginaAnteriorTemasCartao(paginaOrigem);
+    abrirPagina("card-themes");
+  };
+
+  const selecionarTemaCartao = (tema: CardColorKey) => {
+    setNovoCartaoCor(tema);
+    if (window.history.state?.[APP_PAGE_HISTORY_KEY] === "card-themes") {
+      window.history.back();
+    } else {
+      abrirPagina(paginaAnteriorTemasCartao);
+    }
   };
 
   const selecionarCartao = (id: string) => {
@@ -903,6 +1433,10 @@ function Index() {
             cards: cartoes,
             activeCardId: cartaoAtivoId,
             appearanceTheme: novoTema,
+            securitySettings: {
+              confirmSensitiveActions: confirmarAcoesSensiveis,
+            },
+            accessibilitySettings: acessibilidade,
           },
         }),
       });
@@ -916,6 +1450,135 @@ function Index() {
       );
     } finally {
       setTemaSalvando(null);
+    }
+  };
+
+  const atualizarSeguranca = async (novoValor: boolean) => {
+    if (!session) return;
+
+    setConfirmarAcoesSensiveis(novoValor);
+    setSegurancaSalvando(true);
+
+    try {
+      await apiRequest("/user-data", {
+        method: "POST",
+        body: JSON.stringify({
+          data: {
+            cards: cartoes,
+            activeCardId: cartaoAtivoId,
+            appearanceTheme: temaAparencia,
+            securitySettings: {
+              confirmSensitiveActions: novoValor,
+            },
+            accessibilitySettings: acessibilidade,
+          },
+        }),
+      });
+      toast.success(
+        novoValor
+          ? "Confirmações sensíveis ativadas."
+          : "Confirmações sensíveis desativadas.",
+      );
+    } catch (error) {
+      setConfirmarAcoesSensiveis(!novoValor);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível salvar a configuração de segurança.",
+      );
+    } finally {
+      setSegurancaSalvando(false);
+    }
+  };
+
+  const atualizarAcessibilidade = async (
+    proxima: AccessibilitySettings,
+  ) => {
+    if (!session || acessibilidadeSalvando) return;
+
+    const anterior = acessibilidade;
+    setAcessibilidade(proxima);
+    setAcessibilidadeSalvando(true);
+    try {
+      await apiRequest("/user-data", {
+        method: "POST",
+        body: JSON.stringify({
+          data: {
+            cards: cartoes,
+            activeCardId: cartaoAtivoId,
+            appearanceTheme: temaAparencia,
+            securitySettings: {
+              confirmSensitiveActions: confirmarAcoesSensiveis,
+            },
+            accessibilitySettings: proxima,
+          },
+        }),
+      });
+      toast.success("Preferências de acessibilidade salvas.");
+    } catch (error) {
+      setAcessibilidade(anterior);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível salvar as preferências de acessibilidade.",
+      );
+    } finally {
+      setAcessibilidadeSalvando(false);
+    }
+  };
+
+  const confirmarAcaoSensivel = (mensagem: string) => {
+    if (!confirmarAcoesSensiveis) return true;
+    return window.confirm(mensagem);
+  };
+
+  const redefinirSenha = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!session) return;
+
+    if (!senhaAtual.trim() || !novaSenha.trim() || !confirmacaoNovaSenha.trim()) {
+      setSenhaResetError("Preencha todos os campos para redefinir a senha.");
+      setSenhaResetSuccess("");
+      return;
+    }
+    if (novaSenha.length < 8 || novaSenha.length > 72) {
+      setSenhaResetError("A nova senha precisa ter entre 8 e 72 caracteres.");
+      setSenhaResetSuccess("");
+      return;
+    }
+    if (novaSenha !== confirmacaoNovaSenha) {
+      setSenhaResetError("A nova senha e a confirmação precisam ser iguais.");
+      setSenhaResetSuccess("");
+      return;
+    }
+
+    setSenhaResetLoading(true);
+    setSenhaResetError("");
+    setSenhaResetSuccess("");
+
+    try {
+      await apiRequest("/auth/change-password", {
+        method: "POST",
+        body: JSON.stringify({
+          currentPassword: senhaAtual,
+          newPassword: novaSenha,
+          confirmPassword: confirmacaoNovaSenha,
+        }),
+      });
+      setSenhaAtual("");
+      setNovaSenha("");
+      setConfirmacaoNovaSenha("");
+      setSenhaResetSuccess("Senha redefinida com sucesso.");
+      toast.success("Senha redefinida com sucesso.");
+    } catch (error) {
+      setSenhaResetError(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível redefinir a senha.",
+      );
+      setSenhaResetSuccess("");
+    } finally {
+      setSenhaResetLoading(false);
     }
   };
 
@@ -939,7 +1602,8 @@ function Index() {
     setNovoCartaoViagens(cartao.viagens);
     setNovoCartaoInicio(cartao.inicio);
     setCartaoAcoesId(null);
-    setNovoCartaoAberto(true);
+    setNovoCartaoAberto(false);
+    abrirPagina("edit-card");
   };
 
   const criarNovoCartao = async (event: FormEvent<HTMLFormElement>) => {
@@ -988,6 +1652,10 @@ function Index() {
             cards: cartoesAtualizados,
             activeCardId: novoAtivoId,
             appearanceTheme: temaAparencia,
+            securitySettings: {
+              confirmSensitiveActions: confirmarAcoesSensiveis,
+            },
+            accessibilitySettings: acessibilidade,
           },
         }),
       });
@@ -997,7 +1665,11 @@ function Index() {
       if (!cartaoEditado || novoAtivoId === cartaoSalvo.id) {
         aplicarCartaoAtivo(cartaoSalvo);
       }
-      setPage("home");
+      if (cartaoEditado) {
+        window.history.back();
+      } else {
+        setPage("home");
+      }
       setNovoCartaoAberto(false);
       setNovoCartaoIdEditando(null);
       setCartaoAcoesId(null);
@@ -1042,6 +1714,10 @@ function Index() {
             cards: restante,
             activeCardId: proximoAtivoId,
             appearanceTheme: temaAparencia,
+            securitySettings: {
+              confirmSensitiveActions: confirmarAcoesSensiveis,
+            },
+            accessibilitySettings: acessibilidade,
           },
         }),
       });
@@ -1168,7 +1844,6 @@ function Index() {
     setDadosUsuarioCarregados(false);
     setSession(null);
     setPage("home");
-    setMenuOpen(false);
     setAuthError("");
   };
 
@@ -1212,6 +1887,52 @@ function Index() {
     };
   }, [saldo, tarifa, viagens, inicio]);
 
+  const saldoPrivadoAtivo =
+    cartoes.find((cartao) => cartao.id === cartaoAtivoId)?.saldoPrivado ?? true;
+
+  const historicoUso = useMemo(() => {
+    const saldoInicial = Number(saldo.replace(",", ".")) || 0;
+    const custoDia =
+      (Number(tarifa.replace(",", ".")) || 0) * (Number(viagens) || 0);
+    const partesInicio = inicio.split("-").map(Number);
+    const cursor = new Date(
+      partesInicio[0] || 1970,
+      (partesInicio[1] || 1) - 1,
+      partesInicio[2] || 1,
+    );
+    const limite = new Date(hoje);
+    limite.setHours(0, 0, 0, 0);
+    const maximoDiasCobertos =
+      custoDia > 0 ? Math.floor(saldoInicial / custoDia) : 0;
+    const registros: { data: string; gasto: number; saldoApos: number }[] = [];
+    let diasUteis = 0;
+    let guard = 0;
+
+    while (
+      cursor <= limite &&
+      diasUteis < maximoDiasCobertos &&
+      guard < 2000
+    ) {
+      if (cursor.getDay() >= 1 && cursor.getDay() <= 5 && custoDia > 0) {
+        diasUteis++;
+        registros.push({
+          data: iso(cursor),
+          gasto: custoDia,
+          saldoApos: Math.max(0, saldoInicial - diasUteis * custoDia),
+        });
+      }
+      cursor.setDate(cursor.getDate() + 1);
+      guard++;
+    }
+
+    return {
+      diasUteis,
+      totalGasto: diasUteis * custoDia,
+      saldoRestante: Math.max(0, saldoInicial - diasUteis * custoDia),
+      registros: registros.reverse().slice(0, 20),
+    };
+  }, [saldo, tarifa, viagens, inicio, hoje]);
+
   const grade = useMemo(() => {
     const ano = mesRef.getFullYear();
     const mes = mesRef.getMonth();
@@ -1252,113 +1973,26 @@ function Index() {
     session?.firstName?.trim().charAt(0) || "U"
   ).toUpperCase();
 
-  const usuariosAdminFiltrados = useMemo(() => {
-    const termo = adminBusca.trim().toLocaleLowerCase("pt-BR");
-    return adminUsers.filter((usuario) => {
-      if (adminFiltro !== "all" && usuario.role !== adminFiltro) return false;
-      if (!termo) return true;
-      return [usuario.name, usuario.email, usuario.celular]
-        .join(" ")
-        .toLocaleLowerCase("pt-BR")
-        .includes(termo);
-    });
-  }, [adminBusca, adminFiltro, adminUsers]);
-
-  const adminResumo = useMemo(() => {
-    const agora = new Date();
-    const inicioHoje = new Date(
-      agora.getFullYear(),
-      agora.getMonth(),
-      agora.getDate(),
-    );
-    const inicio30Dias = new Date(inicioHoje);
-    inicio30Dias.setDate(inicio30Dias.getDate() - 29);
-    const ultimosSeteDias = Array.from({ length: 7 }, (_, index) => {
-      const dia = new Date(inicioHoje);
-      dia.setDate(dia.getDate() - (6 - index));
-      return {
-        data: dia,
-        total: 0,
-      };
-    });
-
-    let novos30Dias = 0;
-    for (const usuario of adminUsers) {
-      const criadoEm = new Date(usuario.created_at);
-      if (Number.isNaN(criadoEm.getTime())) continue;
-      if (criadoEm >= inicio30Dias && criadoEm <= agora) novos30Dias++;
-
-      const diaIndice = ultimosSeteDias.findIndex(
-        ({ data }) =>
-          data.getFullYear() === criadoEm.getFullYear() &&
-          data.getMonth() === criadoEm.getMonth() &&
-          data.getDate() === criadoEm.getDate(),
-      );
-      if (diaIndice >= 0) ultimosSeteDias[diaIndice]!.total++;
-    }
-
-    return {
-      total: adminUsers.length,
-      clientes: adminUsers.filter((usuario) => usuario.role === "client")
-        .length,
-      administradores: adminUsers.filter((usuario) => usuario.role === "admin")
-        .length,
-      novos30Dias,
-      ultimosSeteDias,
-      maximoGrafico: Math.max(1, ...ultimosSeteDias.map((dia) => dia.total)),
-    };
-  }, [adminUsers]);
-
   if (authVerificando || (session && !dadosUsuarioCarregados)) {
     return (
       <main
-        className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#f3f6fb] px-5 py-10"
+        className="flex min-h-screen items-center justify-center"
+        style={{ backgroundColor: temaApp.background }}
         aria-busy="true"
       >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -left-28 -top-32 size-80 rounded-full bg-blue-200/40 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-32 -right-28 size-80 rounded-full bg-pink-200/35 blur-3xl"
-        />
         <section
           role="status"
-          aria-live="polite"
-          className="relative w-full max-w-md rounded-[28px] border border-white/80 bg-white/90 p-8 text-center shadow-[0_24px_80px_rgba(28,55,90,0.14)] backdrop-blur-xl sm:p-10"
+          aria-label="Carregando aplicativo"
+          className="flex flex-col items-center gap-7"
         >
-          <div
-            className="mx-auto flex size-16 items-center justify-center rounded-[22px] text-white shadow-lg"
-            style={{
-              background: `linear-gradient(135deg, ${temaApp.from}, ${temaApp.to})`,
-            }}
-          >
-            <WalletCards className="size-7" aria-hidden="true" />
-          </div>
-          <div className="mx-auto mt-6 flex size-9 items-center justify-center rounded-full bg-brand-soft text-primary">
-            <RefreshCw className="size-4 animate-spin" aria-hidden="true" />
-          </div>
-          <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.2em] text-primary">
-            RioCard Planner
-          </p>
-          <h1 className="mt-2 text-2xl font-black tracking-tight text-[#0b1f33]">
-            Preparando seu aplicativo
-          </h1>
-          <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">
-            {session
-              ? `Estamos carregando os cartões e as preferências de ${session.firstName}.`
-              : "Estamos verificando sua sessão e preparando seus dados."}
-          </p>
-          <div className="mt-7 h-1.5 overflow-hidden rounded-full bg-slate-100">
-            <div
-              className="h-full w-1/3 animate-pulse rounded-full"
-              style={{ backgroundColor: temaApp.primary }}
-            />
-          </div>
-          <p className="mt-3 text-xs font-medium text-slate-400">
-            Isso pode levar alguns instantes.
-          </p>
+          <img
+            src={rioCardLogo}
+            alt="RioCard Mais"
+            className="h-14 w-auto max-w-[80vw] object-contain"
+          />
+          <span className="inline-flex" aria-hidden="true">
+            <RefreshCw className="size-7 animate-spin text-primary" />
+          </span>
         </section>
       </main>
     );
@@ -1446,12 +2080,12 @@ function Index() {
                     }}
                     className="mb-5 inline-flex items-center gap-2 rounded-lg py-1 text-sm font-bold text-slate-500 transition hover:-translate-x-0.5 hover:text-primary"
                   >
-                    <ArrowLeft className="size-4" aria-hidden="true" />
+                    <ArrowLeft className="size-4 text-primary" aria-hidden="true" />
                     Voltar ao login
                   </button>
                 ) : null}
                 {authMode === "register" ? (
-                  <h2 className="mt-2 text-3xl font-black tracking-tight text-[#0b1f33]">
+                  <h2 className="mt-2 text-3xl font-black tracking-tight text-primary">
                     Crie sua conta
                   </h2>
                 ) : null}
@@ -1523,14 +2157,14 @@ function Index() {
                 <div className="mt-6 space-y-3.5">
                   <label className="block">
                     <span className="mb-2 block text-sm font-bold text-slate-700">
-                      Primeiro nome
+                      Nome completo
                     </span>
                     <input
                       type="text"
-                      autoComplete="given-name"
+                      autoComplete="name"
                       value={cadastroNome}
                       onChange={(e) => setCadastroNome(e.target.value)}
-                      placeholder="Seu nome"
+                      placeholder="Seu nome completo"
                       className="field h-11 rounded-xl border-slate-200 bg-slate-50/70 transition focus:bg-white"
                     />
                   </label>
@@ -1631,39 +2265,12 @@ function Index() {
       }}
     >
       <div
-        className={`mx-auto min-h-screen overflow-hidden shadow-none ${page === "admin" ? "max-w-7xl" : page === "calendar" ? "max-w-5xl" : "max-w-md"}`}
+        className={`mx-auto min-h-screen overflow-hidden shadow-none ${page === "calendar" ? "w-full" : page === "history" ? "max-w-5xl" : page === "edit-card" || page === "card-themes" ? "max-w-4xl" : "max-w-md"}`}
         style={{
           background:
             page === "home" ? homeMenuBackground : temaApp.background,
         }}
       >
-        <header
-          className="px-4 pb-4 pt-3 text-white"
-          style={{
-            background: `linear-gradient(110deg, ${temaApp.from}, ${temaApp.to})`,
-          }}
-        >
-          <div className="flex items-center justify-between gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMenuOpen((open) => !open)}
-              aria-label={menuOpen ? "Fechar menu lateral" : "Abrir menu lateral"}
-              aria-expanded={menuOpen}
-              aria-controls="menu-lateral"
-              className="h-10 w-10 rounded-full border border-white/15 bg-white/10 text-white shadow-sm transition-all duration-200 hover:rotate-90 hover:bg-white/20"
-            >
-              <Menu aria-hidden="true" />
-            </Button>
-
-            <div className="flex-1" />
-
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xs font-bold">
-              {inicialUsuario}
-            </div>
-          </div>
-        </header>
-
         <button
           type="button"
           aria-label="Fechar menu"
@@ -1689,14 +2296,17 @@ function Index() {
               size="icon"
               onClick={() => setMenuOpen(false)}
               aria-label="Fechar menu"
-              className="h-9 w-9 rounded-full bg-slate-100 text-slate-600 transition-all duration-200 hover:rotate-90 hover:bg-slate-200 hover:text-slate-900"
+              className="h-9 w-9 rounded-full bg-brand-soft text-primary transition-all duration-200 hover:rotate-90 hover:bg-primary/10"
             >
               <X className="size-4" aria-hidden="true" />
             </Button>
           </div>
 
-          <div
-            className="relative mb-7 overflow-hidden rounded-2xl p-4 text-white shadow-lg shadow-black/10"
+          <button
+            type="button"
+            onClick={() => abrirPagina("profile")}
+            aria-label={`Abrir perfil de ${formatarNomeCompleto(session.firstName)}`}
+            className="group relative mb-7 w-full overflow-hidden rounded-2xl p-4 text-left text-white shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             style={{
               background: `linear-gradient(135deg, ${temaApp.from}, ${temaApp.to})`,
             }}
@@ -1710,7 +2320,7 @@ function Index() {
                 {inicialUsuario}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-base font-bold">{session.firstName}</p>
+                <p className="truncate font-display text-base font-bold tracking-tight">{formatarNomeCompleto(session.firstName)}</p>
                 <p className="truncate text-xs text-white/75">{session.email}</p>
               </div>
             </div>
@@ -1718,7 +2328,7 @@ function Index() {
               <span>{session.role === "admin" ? "Administrador" : "Conta RioCard Mais"}</span>
               <span>{session.rememberMe ? "Sessão de 30 dias" : "Sessão de 24 horas"}</span>
             </div>
-          </div>
+          </button>
 
           <p className="mb-2 px-3 text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">
             Navegação
@@ -1730,9 +2340,9 @@ function Index() {
               className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm font-semibold transition-all duration-200 ${page === "home" ? "bg-brand-soft text-primary shadow-sm" : "text-slate-600 hover:translate-x-1 hover:bg-slate-50 hover:text-slate-950"}`}
               onClick={() => abrirPagina("home")}
             >
-              <House className="size-[18px]" aria-hidden="true" />
+              <House className="size-[18px] text-primary" aria-hidden="true" />
               <span className="flex-1">Início</span>
-              <ChevronRight className={`size-4 transition-transform duration-200 ${page === "home" ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"}`} aria-hidden="true" />
+              <ChevronRight className={`size-4 text-primary/70 transition-transform duration-200 ${page === "home" ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"}`} aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -1740,9 +2350,19 @@ function Index() {
               className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm font-semibold transition-all duration-200 ${page === "calendar" ? "bg-brand-soft text-primary shadow-sm" : "text-slate-600 hover:translate-x-1 hover:bg-slate-50 hover:text-slate-950"}`}
               onClick={() => abrirPagina("calendar")}
             >
-              <CalendarDays className="size-[18px]" aria-hidden="true" />
+              <CalendarDays className="size-[18px] text-primary" aria-hidden="true" />
               <span className="flex-1">Ver calendário</span>
-              <ChevronRight className={`size-4 transition-transform duration-200 ${page === "calendar" ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"}`} aria-hidden="true" />
+              <ChevronRight className={`size-4 text-primary/70 transition-transform duration-200 ${page === "calendar" ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"}`} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              aria-current={page === "history" ? "page" : undefined}
+              className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm font-semibold transition-all duration-200 ${page === "history" ? "bg-brand-soft text-primary shadow-sm" : "text-slate-600 hover:translate-x-1 hover:bg-slate-50 hover:text-slate-950"}`}
+              onClick={() => abrirPagina("history")}
+            >
+              <History className="size-[18px] text-primary" aria-hidden="true" />
+              <span className="flex-1">Histórico de uso</span>
+              <ChevronRight className={`size-4 text-primary/70 transition-transform duration-200 ${page === "history" ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"}`} aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -1750,33 +2370,13 @@ function Index() {
               className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm font-semibold transition-all duration-200 ${page === "settings" || page === "appearance" ? "bg-brand-soft text-primary shadow-sm" : "text-slate-600 hover:translate-x-1 hover:bg-slate-50 hover:text-slate-950"}`}
               onClick={() => abrirPagina("settings")}
             >
-              <WalletCards className="size-[18px]" aria-hidden="true" />
+              <WalletCards className="size-[18px] text-primary" aria-hidden="true" />
               <span className="flex-1">Configurações</span>
-              <ChevronRight className={`size-4 transition-transform duration-200 ${page === "settings" || page === "appearance" ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"}`} aria-hidden="true" />
+              <ChevronRight className={`size-4 text-primary/70 transition-transform duration-200 ${page === "settings" || page === "appearance" ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"}`} aria-hidden="true" />
             </button>
-            {session.role === "admin" ? (
-              <button
-                type="button"
-                aria-current={page === "admin" ? "page" : undefined}
-                className={`group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm font-semibold transition-all duration-200 ${page === "admin" ? "bg-brand-soft text-primary shadow-sm" : "text-slate-600 hover:translate-x-1 hover:bg-slate-50 hover:text-slate-950"}`}
-                onClick={() => abrirPagina("admin")}
-              >
-                <ShieldCheck className="size-[18px]" aria-hidden="true" />
-                <span className="flex-1">Administração</span>
-                <ChevronRight className={`size-4 transition-transform duration-200 ${page === "admin" ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"}`} aria-hidden="true" />
-              </button>
-            ) : null}
           </nav>
 
           <div className="mt-auto border-t border-slate-100 pt-5">
-            <button
-              type="button"
-              className="group flex w-full items-center gap-3 rounded-xl px-3.5 py-3 text-left text-sm font-semibold text-rose-600 transition-all duration-200 hover:translate-x-1 hover:bg-rose-50"
-              onClick={sairDaConta}
-            >
-              <LogOut className="size-[18px] transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
-              Sair da conta
-            </button>
             <p className="mt-3 px-3 text-[10px] font-medium text-slate-400">
               Planejador de passagens · RioCard Mais
             </p>
@@ -1790,6 +2390,33 @@ function Index() {
               page === "home" ? homeMenuBackground : temaApp.background,
           }}
         >
+          {page === "home" ? (
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => abrirPagina("profile")}
+                  aria-label={`Abrir perfil de ${formatarNomeCompleto(session.firstName)}`}
+                  title="Meu perfil"
+                  className="flex size-10 items-center justify-center rounded-full border border-[#dfe9f5] bg-white text-primary shadow-sm transition hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  <UserRound className="size-4" aria-hidden="true" />
+                </button>
+                <span className="font-display text-sm font-semibold tracking-tight text-slate-700">
+                  {formatarNomeCompleto(session.firstName)}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => abrirPagina("settings")}
+                aria-label="Abrir configurações"
+                title="Configurações"
+                className="flex size-10 items-center justify-center rounded-full border border-[#dfe9f5] bg-white text-primary shadow-sm transition hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                <Settings className="size-4" aria-hidden="true" />
+              </button>
+            </div>
+          ) : null}
           {page === "home" ? (
             <div className="space-y-4">
               <div
@@ -1920,76 +2547,68 @@ function Index() {
                             aria-hidden="true"
                             className="pointer-events-none absolute -right-5 -top-9 size-40 rounded-full border border-white/10"
                           />
-                          <div className="relative flex min-h-[202px] flex-col justify-between">
-                          <div className="flex items-center justify-between">
-                            <div className="text-[15px] font-black italic tracking-tight drop-shadow-sm">
-                              RioCard <span className="font-semibold">Mais</span>
+                          {tema.decoration ? (
+                            <CardDecoration type={tema.decoration} />
+                          ) : null}
+                          <div className="relative z-10 flex min-h-[202px] flex-col">
+                            <div className="flex items-center justify-between">
+                              <div className="text-[15px] font-black italic tracking-tight drop-shadow-sm">
+                                RioCard <span className="font-semibold">Mais</span>
+                              </div>
+                              <Wifi
+                                aria-hidden="true"
+                                className="size-6 rotate-90 text-white/90 drop-shadow-sm"
+                              />
                             </div>
-                            <Wifi
-                              aria-hidden="true"
-                              className="size-6 rotate-90 text-white/90 drop-shadow-sm"
-                            />
-                          </div>
 
-                          <div className="mt-4 flex items-center justify-between gap-4">
-                            <div
-                              aria-hidden="true"
-                              className="relative h-9 w-11 shrink-0 overflow-hidden rounded-[8px] border border-amber-100/70 bg-gradient-to-br from-[#fff0b3] via-[#d9b45b] to-[#a77b25] shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),inset_0_-2px_3px_rgba(90,55,0,0.25)]"
-                            >
-                              <span className="absolute bottom-0 left-1/3 top-0 w-px bg-amber-900/30" />
-                              <span className="absolute bottom-0 right-1/3 top-0 w-px bg-amber-900/30" />
-                              <span className="absolute left-0 right-0 top-1/2 h-px bg-amber-900/30" />
-                              <span className="absolute inset-x-0 top-[27%] h-[46%] rounded-full border-y border-amber-900/25" />
-                            </div>
-                            <div className="min-w-0 flex-1 text-right">
+                            <div className="mt-5">
                               <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-white/65">
                                 Cartão de transporte
                               </p>
-                              <p className="truncate text-lg font-extrabold tracking-tight drop-shadow-sm sm:text-xl">
+                              <p className="mt-1 truncate text-xl font-extrabold tracking-tight drop-shadow-sm sm:text-2xl">
                                 {getNomeCartaoExibicao(cartao.nome)}
                               </p>
                             </div>
-                          </div>
 
-                          <div className="mt-3">
-                            <div className="flex items-end justify-between gap-3">
-                              <div className="min-w-0">
-                                <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">
-                                  Saldo disponível
-                                </p>
-                                <p className="truncate text-[27px] font-black tracking-tight drop-shadow-sm sm:text-[32px]">
-                                  {(cartao.saldoPrivado ?? true)
-                                    ? "R$ •••••"
-                                    : `R$ ${Number(cartao.saldo.replace(",", ".")) || 0}`}
-                                </p>
+                            <div className="mt-auto pt-4">
+                              <div className="flex items-end justify-between gap-3">
+                                <div className="min-w-0">
+                                  <p className="mb-1 text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">
+                                    Saldo disponível
+                                  </p>
+                                  <p className="truncate text-[27px] font-black tracking-tight drop-shadow-sm sm:text-[32px]">
+                                    {(cartao.saldoPrivado ?? true)
+                                      ? "R$ •••••"
+                                      : `R$ ${Number(cartao.saldo.replace(",", ".")) || 0}`}
+                                  </p>
+                                </div>
+                                <button
+                                  type="button"
+                                  aria-label={
+                                    (cartao.saldoPrivado ?? true)
+                                      ? "Mostrar saldo"
+                                      : "Ocultar saldo"
+                                  }
+                                  className="mb-1 shrink-0 rounded-full border border-white/30 bg-black/10 p-2 text-white/90 shadow-sm transition hover:bg-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    alternarSaldoPrivado(cartao.id);
+                                  }}
+                                >
+                                  {(cartao.saldoPrivado ?? true) ? (
+                                    <EyeOff className="size-4" />
+                                  ) : (
+                                    <Eye className="size-4" />
+                                  )}
+                                </button>
                               </div>
-                              <button
-                                type="button"
-                                aria-label={
-                                  (cartao.saldoPrivado ?? true)
-                                    ? "Mostrar saldo"
-                                    : "Ocultar saldo"
-                                }
-                                className="mb-1 shrink-0 rounded-full border border-white/30 bg-black/10 p-2 text-white/90 shadow-sm transition hover:bg-black/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-                                onClick={(event) => {
-                                  event.stopPropagation();
-                                  alternarSaldoPrivado(cartao.id);
-                                }}
-                              >
-                                {(cartao.saldoPrivado ?? true) ? (
-                                  <EyeOff className="size-4" />
-                                ) : (
-                                  <Eye className="size-4" />
-                                )}
-                              </button>
+                              <div className="mt-2 flex items-center justify-between border-t border-white/20 pt-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">
+                                <span>•••• &nbsp;•••• &nbsp;••••</span>
+                                <span>
+                                  Atualizado em {new Date().toLocaleDateString("pt-BR")}
+                                </span>
+                              </div>
                             </div>
-                            <div className="mt-2 flex items-center justify-between border-t border-white/20 pt-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-white/65">
-                              <span>•••• &nbsp;•••• &nbsp;••••</span>
-                              <span>
-                                Atualizado em {new Date().toLocaleDateString("pt-BR")}
-                              </span>
-                            </div>
-                          </div>
                           </div>
                         </div>
                         {cartaoAcoesId === cartao.id ? (
@@ -2004,7 +2623,7 @@ function Index() {
                                   event.stopPropagation();
                                   abrirEdicaoCartao(cartao);
                                 }}
-                                className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-xl bg-blue-50 px-3 py-3 text-sm font-bold text-blue-700 transition hover:-translate-y-0.5 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                                  className="flex min-h-[78px] flex-col items-center justify-center gap-2 rounded-xl bg-brand-soft px-3 py-3 text-sm font-bold text-primary transition hover:-translate-y-0.5 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                               >
                                 <Pencil className="size-5" aria-hidden="true" />
                                 Editar cartão
@@ -2014,7 +2633,7 @@ function Index() {
                                 onClick={(event) => {
                                   event.stopPropagation();
                                   if (
-                                    window.confirm(
+                                    confirmarAcaoSensivel(
                                       `Deseja deletar o cartão “${getNomeCartaoExibicao(cartao.nome)}”?`,
                                     )
                                   ) {
@@ -2036,13 +2655,13 @@ function Index() {
                     type="button"
                     aria-label="Adicionar cartão novo"
                     onClick={abrirCriacaoCartao}
-                    className="flex min-h-[244px] w-full shrink-0 snap-center flex-col items-center justify-center gap-4 rounded-[24px] border-2 border-dashed border-[#b8cbe0] bg-[#f3f6fb] px-6 text-center text-[#35516e] transition-[transform,border-color,background-color,box-shadow] duration-300 hover:scale-[1.01] hover:border-[#0079fa] hover:bg-white hover:shadow-[0_14px_30px_rgba(0,121,250,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0079fa] focus-visible:ring-offset-2"
+                    className="flex min-h-[244px] w-full shrink-0 snap-center flex-col items-center justify-center gap-4 rounded-[24px] border-2 border-dashed border-primary/35 bg-brand-soft/50 px-6 text-center text-primary transition-[transform,border-color,background-color,box-shadow] duration-300 hover:scale-[1.01] hover:border-primary hover:bg-white hover:shadow-lg hover:shadow-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   >
-                    <span className="flex size-16 items-center justify-center rounded-2xl border border-[#d5e3f1] bg-white text-[#0079fa] shadow-sm transition-transform duration-300 hover:rotate-90">
+                    <span className="flex size-16 items-center justify-center rounded-2xl border border-primary/20 bg-white text-primary shadow-sm transition-transform duration-300 hover:rotate-90">
                       <Plus className="size-8" aria-hidden="true" />
                     </span>
                     <span>
-                      <span className="block text-lg font-extrabold text-[#0b1f33]">
+                      <span className="block text-lg font-extrabold text-primary">
                         Adicionar cartão
                       </span>
                       <span className="mt-1 block text-sm text-slate-500">
@@ -2052,32 +2671,67 @@ function Index() {
                   </button>
                 </div>
               </div>
+              <div className="rounded-[18px] border border-[#dfe9f5] bg-white p-2 shadow-sm">
+                <div className="grid grid-cols-2 gap-3 rounded-[14px] bg-[#f7faff] p-1">
+                  {[
+                    {
+                      key: "calendar",
+                      label: "Calendário",
+                      icon: <CalendarDays className="size-4" aria-hidden="true" />,
+                      active: false,
+                    },
+                    {
+                      key: "history",
+                      label: "Histórico de uso",
+                      icon: <History className="size-4" aria-hidden="true" />,
+                      active: false,
+                    },
+                  ].map((item) => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      aria-label={item.label}
+                      title={item.label}
+                      onClick={() => abrirPagina(item.key as "calendar" | "history")}
+                      className={`flex h-11 items-center justify-center rounded-full border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${item.active ? "border-primary bg-primary text-white shadow-sm" : "border-[#dfe9f5] bg-white text-primary hover:border-primary/40"}`}
+                    >
+                      {item.icon}
+                    </button>
+                  ))}
+                </div>
+              </div>
               <div className="rounded-[18px] border border-[#dfe9f5] bg-white p-4 shadow-sm">
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-wide text-primary">
                   Custo por dia
                 </p>
-                <p className="mt-2 text-2xl font-extrabold text-[#0b1f33]">
-                  {brl(calc.custoDia)}
+                <p className="mt-2 text-2xl font-bold text-slate-600">
+                  {saldoPrivadoAtivo ? "R$ •••••" : brl(calc.custoDia)}
                 </p>
               </div>
 
               <div className="rounded-[18px] border border-[#dfe9f5] bg-white p-4 shadow-sm">
-                <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                <p className="text-xs font-bold uppercase tracking-wide text-primary">
                   Resumo
                 </p>
-                <div className="mt-3 space-y-3 text-sm text-[#0b1f33]">
+                <div className="mt-3 space-y-3 text-sm text-slate-600">
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-muted-foreground">Total usado</span>
-                    <strong>{brl(calc.totalGasto)}</strong>
+                    <strong className="font-semibold text-slate-700">
+                      {saldoPrivadoAtivo ? "R$ •••••" : brl(calc.totalGasto)}
+                    </strong>
                   </div>
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-muted-foreground">Sobra</span>
-                    <strong>{brl(calc.sobra)}</strong>
+                    <strong className="font-semibold text-slate-700">
+                      {saldoPrivadoAtivo ? "R$ •••••" : brl(calc.sobra)}
+                    </strong>
                   </div>
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-foreground">Recarga vence</span>
-                    <strong className="text-foreground">
-                      {calc.recarga
+                    <strong className="font-semibold text-slate-700">
+                      {saldoPrivadoAtivo
+                        ? "••/••/••••"
+                        : calc.recarga
                         ? new Date(
                             `${calc.recarga}T00:00:00`,
                           ).toLocaleDateString("pt-BR")
@@ -2090,15 +2744,80 @@ function Index() {
           ) : null}
         </div>
 
+        <div className="px-4 pb-6 pt-4">
+        {page === "profile" && session ? (
+          <section className="mx-auto max-w-2xl space-y-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-center gap-4">
+                <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary">
+                  <UserRound className="size-7" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                    Meu perfil
+                  </p>
+                  <h2 className="mt-1 truncate text-2xl font-extrabold text-primary">
+                    {formatarNomeCompleto(session.firstName)}
+                  </h2>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <h3 className="font-bold text-primary">Informações da conta</h3>
+              <dl className="mt-4 divide-y divide-slate-100">
+                <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                  <dt className="text-sm text-muted-foreground">Nome</dt>
+                  <dd className="break-words text-sm font-semibold text-[#0b1f33] sm:text-right">
+                    {formatarNomeCompleto(session.firstName)}
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                  <dt className="text-sm text-muted-foreground">Email</dt>
+                  <dd className="break-all text-sm font-semibold text-[#0b1f33] sm:text-right">
+                    {session.email}
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                  <dt className="text-sm text-muted-foreground">Celular</dt>
+                  <dd className="text-sm font-semibold text-[#0b1f33] sm:text-right">
+                    {formatarCelular(session.celular) || "Não informado"}
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                  <dt className="text-sm text-muted-foreground">Tipo de conta</dt>
+                  <dd className="text-sm font-semibold text-[#0b1f33] sm:text-right">
+                    {session.role === "admin" ? "Administrador" : "Usuário"}
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                  <dt className="text-sm text-muted-foreground">Manter conectado</dt>
+                  <dd className="text-sm font-semibold text-[#0b1f33] sm:text-right">
+                    {session.rememberMe ? "Até 30 dias" : "Até 24 horas"}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <button
+              type="button"
+              onClick={sairDaConta}
+              className="flex w-full items-center justify-center gap-2 rounded-[18px] border border-red-200 bg-white px-4 py-3.5 text-sm font-bold text-red-600 shadow-sm transition hover:border-red-300 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+            >
+              <LogOut className="size-4" aria-hidden="true" />
+              Sair da conta
+            </button>
+          </section>
+        ) : null}
+
         {page === "calendar" ? (
-          <section className="mx-auto max-w-4xl pb-8">
-            <section className="rounded-[26px] border border-slate-200 bg-white p-4 shadow-sm sm:p-7">
+          <section className="w-full">
+            <section className="rounded-[26px] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
               <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
                     Visão mensal
                   </p>
-                  <h2 className="mt-1 text-2xl font-extrabold capitalize tracking-tight text-slate-950">
+                  <h2 className="mt-1 text-2xl font-extrabold capitalize tracking-tight text-primary">
                     {MESES[mesRef.getMonth()]}
                     <span className="ml-2 font-semibold text-slate-400">
                       {mesRef.getFullYear()}
@@ -2124,7 +2843,7 @@ function Index() {
                     aria-label="Mês anterior"
                     className="size-9 rounded-xl"
                   >
-                    <ChevronLeft className="size-4" />
+                    <ChevronLeft className="size-4 text-primary" />
                   </Button>
                   <Button
                     type="button"
@@ -2134,7 +2853,7 @@ function Index() {
                     aria-label="Próximo mês"
                     className="size-9 rounded-xl"
                   >
-                    <ChevronRight className="size-4" />
+                    <ChevronRight className="size-4 text-primary" />
                   </Button>
                 </div>
               </div>
@@ -2201,13 +2920,322 @@ function Index() {
           </section>
         ) : null}
 
+        {page === "history" ? (
+          <section className="mx-auto max-w-4xl space-y-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                    Cartão selecionado
+                  </p>
+                  <h2 className="mt-1 truncate text-2xl font-extrabold text-primary">
+                    Histórico de uso
+                  </h2>
+                  <p className="mt-1 truncate text-sm text-muted-foreground">
+                    {cartoes.find((item) => item.id === cartaoAtivoId)?.nome ?? "Cartão principal"}
+                  </p>
+                </div>
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary">
+                  <History className="size-6" aria-hidden="true" />
+                </span>
+              </div>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-[20px] border border-[#dfe9f5] bg-white p-4 shadow-sm">
+                <p className="text-xs font-bold uppercase tracking-wide text-primary">
+                  Dias utilizados
+                </p>
+                <p className="mt-2 text-2xl font-extrabold text-[#0b1f33]">
+                  {historicoUso.diasUteis}
+                </p>
+              </div>
+              <div className="rounded-[20px] border border-[#dfe9f5] bg-white p-4 shadow-sm">
+                <p className="text-xs font-bold uppercase tracking-wide text-primary">
+                  Gasto estimado
+                </p>
+                <p className="mt-2 text-2xl font-extrabold text-[#0b1f33]">
+                  {brl(historicoUso.totalGasto)}
+                </p>
+              </div>
+              <div className="rounded-[20px] border border-[#dfe9f5] bg-white p-4 shadow-sm">
+                <p className="text-xs font-bold uppercase tracking-wide text-primary">
+                  Saldo estimado
+                </p>
+                <p className="mt-2 text-2xl font-extrabold text-[#0b1f33]">
+                  {brl(historicoUso.saldoRestante)}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 rounded-[18px] border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">
+              <span className="mt-0.5 shrink-0 font-black" aria-hidden="true">i</span>
+              <p>
+                Este é um histórico estimado com base na recarga, tarifa, viagens por dia e data inicial informadas. O app não recebe transações reais do RioCard.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-[24px] border border-[#dfe9f5] bg-white shadow-sm">
+              <div className="border-b border-slate-100 px-5 py-4 sm:px-6">
+                <h3 className="font-bold text-primary">Dias cobertos pelo saldo</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Exibindo até os 20 dias úteis mais recentes.
+                </p>
+              </div>
+              {historicoUso.registros.length > 0 ? (
+                <ul className="divide-y divide-slate-100">
+                  {historicoUso.registros.map((registro) => (
+                    <li
+                      key={registro.data}
+                      className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-4 sm:px-6"
+                    >
+                      <div className="min-w-0">
+                        <p className="font-semibold text-[#0b1f33]">
+                          {new Date(`${registro.data}T00:00:00`).toLocaleDateString("pt-BR", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {viagens} {Number(viagens) === 1 ? "passagem prevista" : "passagens previstas"}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-[#0b1f33]">−{brl(registro.gasto)}</p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          Saldo estimado: {brl(registro.saldoApos)}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="px-5 py-10 text-center sm:px-6">
+                  <CalendarDays className="mx-auto size-8 text-primary/35" aria-hidden="true" />
+                  <p className="mt-3 font-semibold text-primary">Ainda não há dias cobertos</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Confira o saldo e a data inicial do cartão para calcular o histórico estimado.
+                  </p>
+                </div>
+              )}
+            </div>
+          </section>
+        ) : null}
+
+        {page === "card-themes" ? (
+          <section className="mx-auto max-w-4xl space-y-4 pb-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-center gap-4">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary">
+                  <Palette className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                    Personalização do cartão
+                  </p>
+                  <h2 className="mt-1 text-2xl font-extrabold text-primary">
+                    Temas do cartão
+                  </h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Escolha uma cor padrão ou um tema decorativo.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 rounded-2xl border border-[#dfe9f5] bg-white p-1.5 shadow-sm">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={abaTemasCartao === "standard"}
+                onClick={() => setAbaTemasCartao("standard")}
+                className={`rounded-xl px-3 py-2.5 text-sm font-bold transition ${abaTemasCartao === "standard" ? "bg-primary text-primary-foreground shadow-sm" : "text-slate-600 hover:bg-brand-soft hover:text-primary"}`}
+              >
+                Cor padrão <span className="ml-1 opacity-75">(6)</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={abaTemasCartao === "decorative"}
+                onClick={() => setAbaTemasCartao("decorative")}
+                className={`rounded-xl px-3 py-2.5 text-sm font-bold transition ${abaTemasCartao === "decorative" ? "bg-primary text-primary-foreground shadow-sm" : "text-slate-600 hover:bg-brand-soft hover:text-primary"}`}
+              >
+                Decorativos <span className="ml-1 opacity-75">(24)</span>
+              </button>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {(Object.keys(CARD_THEMES) as CardColorKey[])
+                .filter((key) =>
+                  abaTemasCartao === "standard"
+                    ? CARD_THEMES[key].decoration === null
+                    : CARD_THEMES[key].decoration !== null,
+                )
+                .map((key) => {
+                const theme = CARD_THEMES[key];
+                const selected = novoCartaoCor === key;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    aria-pressed={selected}
+                    aria-label={`Usar tema ${theme.name}`}
+                    onClick={() => selecionarTemaCartao(key)}
+                    className={`group rounded-[22px] border bg-white p-3 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:p-4 ${selected ? "border-primary ring-2 ring-primary/20" : "border-[#dfe9f5] hover:border-primary/40"}`}
+                  >
+                    <CardThemePreview themeKey={key} />
+                    <span className="mt-3 flex items-center gap-3">
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-bold text-primary">
+                          {theme.name}
+                        </span>
+                        <span className="mt-0.5 block text-sm text-muted-foreground">
+                          {CARD_THEME_DESCRIPTIONS[key]}
+                        </span>
+                      </span>
+                      {selected ? (
+                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                          <Check className="size-4" aria-hidden="true" />
+                        </span>
+                      ) : null}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+        ) : null}
+
+        {page === "edit-card" ? (
+          <section className="mx-auto max-w-2xl space-y-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-center gap-4">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary">
+                  <Pencil className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                    Cartão
+                  </p>
+                  <h2 className="mt-1 text-2xl font-extrabold text-primary">
+                    Editar cartão
+                  </h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Atualize os dados e o planejamento deste cartão.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <form
+              onSubmit={(event) => void criarNovoCartao(event)}
+              className="space-y-4 rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6"
+            >
+              <Campo label="Nome do cartão">
+                <input
+                  required
+                  maxLength={40}
+                  type="text"
+                  value={novoCartaoNome}
+                  onChange={(event) => setNovoCartaoNome(event.target.value)}
+                  placeholder="Ex.: Cartão principal"
+                  className="field"
+                />
+              </Campo>
+
+              <div>
+                <p className="mb-2 text-sm font-semibold text-foreground">
+                  Tema decorativo
+                </p>
+                <button
+                  type="button"
+                  onClick={() => abrirTemasDoCartao("edit-card")}
+                  aria-label={`Selecionar tema decorativo. Tema atual: ${CARD_THEMES[novoCartaoCor].name}`}
+                  className="group flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-2 text-left transition hover:border-primary/40 hover:bg-brand-soft/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <span className="w-32 shrink-0">
+                    <CardThemePreview themeKey={novoCartaoCor} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-bold text-primary">
+                      {CARD_THEMES[novoCartaoCor].name}
+                    </span>
+                    <span className="mt-1 block text-xs text-muted-foreground">
+                      Toque para escolher outro tema
+                    </span>
+                  </span>
+                  <ChevronRight className="mr-2 size-5 shrink-0 text-primary/70 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                </button>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Campo label="Valor da recarga (R$)">
+                  <input
+                    required
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    inputMode="decimal"
+                    value={novoCartaoSaldo}
+                    onChange={(event) => setNovoCartaoSaldo(event.target.value)}
+                    className="field"
+                  />
+                </Campo>
+                <Campo label="Valor de cada passagem (R$)">
+                  <input
+                    required
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    inputMode="decimal"
+                    value={novoCartaoTarifa}
+                    onChange={(event) => setNovoCartaoTarifa(event.target.value)}
+                    className="field"
+                  />
+                </Campo>
+                <Campo label="Passagens por dia">
+                  <select
+                    value={novoCartaoViagens}
+                    onChange={(event) => setNovoCartaoViagens(event.target.value)}
+                    className="field"
+                  >
+                    <option value="1">1 (só ida)</option>
+                    <option value="2">2 (ida e volta)</option>
+                    <option value="3">3 passagens</option>
+                    <option value="4">4 (2 ônibus por trecho)</option>
+                  </select>
+                </Campo>
+                <Campo label="Começar a contar a partir de">
+                  <input
+                    required
+                    type="date"
+                    value={novoCartaoInicio}
+                    onChange={(event) => setNovoCartaoInicio(event.target.value)}
+                    className="field"
+                  />
+                </Campo>
+              </div>
+
+              <Button
+                type="submit"
+                size="lg"
+                disabled={salvandoNovoCartao}
+                className="w-full rounded-xl font-bold shadow-lg shadow-primary/20 transition-transform duration-200 hover:-translate-y-0.5 disabled:translate-y-0"
+              >
+                {salvandoNovoCartao ? "Salvando alterações..." : "Salvar alterações"}
+              </Button>
+            </form>
+          </section>
+        ) : null}
+
         {page === "settings" ? (
           <section className="mx-auto max-w-2xl space-y-4">
-            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-5 shadow-sm sm:p-7">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
                 Configurações
               </p>
-              <h2 className="mt-1 text-xl font-extrabold text-[#0b1f33]">
+              <h2 className="mt-1 text-xl font-extrabold text-primary">
                 Personalize seu app
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -2217,14 +3245,56 @@ function Index() {
 
             <button
               type="button"
-              onClick={() => setPage("appearance")}
-              className="group flex w-full items-center gap-4 rounded-[22px] border border-[#dfe9f5] bg-white p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:p-5"
+              onClick={abrirDadosDaConta}
+              className="group flex w-full items-center gap-4 rounded-[22px] border border-[#dfe9f5] bg-white p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:p-6"
+            >
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary transition-transform duration-200 group-hover:scale-105">
+                <UserRound className="size-6" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-bold text-primary">
+                  Dados da conta
+                </span>
+                <span className="mt-1 block text-sm text-muted-foreground">
+                  Edite seu nome, email e celular
+                </span>
+              </span>
+              <ChevronRight
+                className="size-5 shrink-0 text-primary/50 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary"
+                aria-hidden="true"
+              />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => abrirPagina("security")}
+              className="group flex w-full items-center gap-4 rounded-[22px] border border-[#dfe9f5] bg-white p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:p-6"
+            >
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary transition-transform duration-200 group-hover:scale-105">
+                <ShieldCheck className="size-6" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-bold text-primary">Segurança</span>
+                <span className="mt-1 block text-sm text-muted-foreground">
+                  Confirmações para ações sensíveis e proteção da sessão
+                </span>
+              </span>
+              <ChevronRight
+                className="size-5 shrink-0 text-primary/50 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary"
+                aria-hidden="true"
+              />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => abrirPagina("appearance")}
+              className="group flex w-full items-center gap-4 rounded-[22px] border border-[#dfe9f5] bg-white p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:p-6"
             >
               <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary transition-transform duration-200 group-hover:scale-105">
                 <Palette className="size-6" aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block font-bold text-[#0b1f33]">
+                <span className="block font-bold text-primary">
                   Aparência do app
                 </span>
                 <span className="mt-1 block text-sm text-muted-foreground">
@@ -2232,30 +3302,387 @@ function Index() {
                 </span>
               </span>
               <ChevronRight
-                className="size-5 shrink-0 text-slate-400 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary"
+                className="size-5 shrink-0 text-primary/50 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary"
+                aria-hidden="true"
+              />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => abrirPagina("accessibility")}
+              className="group flex w-full items-center gap-4 rounded-[22px] border border-[#dfe9f5] bg-white p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:p-6"
+            >
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary transition-transform duration-200 group-hover:scale-105">
+                <Eye className="size-6" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-bold text-primary">Acessibilidade</span>
+                <span className="mt-1 block text-sm text-muted-foreground">
+                  Tamanho do texto e contraste
+                </span>
+              </span>
+              <ChevronRight
+                className="size-5 shrink-0 text-primary/50 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary"
                 aria-hidden="true"
               />
             </button>
           </section>
         ) : null}
 
-        {page === "appearance" ? (
-          <section className="mx-auto max-w-4xl space-y-5">
-            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-5 shadow-sm sm:p-7">
-              <button
-                type="button"
-                onClick={() => setPage("settings")}
-                className="mb-5 inline-flex items-center gap-1 rounded-lg px-2 py-1 text-sm font-bold text-primary transition hover:bg-brand-soft"
+        {page === "accessibility" ? (
+          <section className="mx-auto max-w-2xl space-y-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-center gap-4">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary">
+                  <Eye className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                    Preferências visuais
+                  </p>
+                  <h2 className="mt-1 text-2xl font-extrabold text-primary">
+                    Acessibilidade
+                  </h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Ajuste a leitura para ficar mais confortável.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <h3 className="font-bold text-primary">Tamanho do texto</h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                A alteração é aplicada imediatamente em todo o aplicativo.
+              </p>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {([
+                  ["normal", "Padrão", "Aa"],
+                  ["large", "Grande", "Aa"],
+                  ["larger", "Maior", "Aa"],
+                ] as const).map(([size, label, sample]) => (
+                  <button
+                    key={size}
+                    type="button"
+                    aria-pressed={acessibilidade.textSize === size}
+                    disabled={acessibilidadeSalvando}
+                    onClick={() =>
+                      void atualizarAcessibilidade({
+                        ...acessibilidade,
+                        textSize: size,
+                      })
+                    }
+                    className={`flex min-h-20 flex-col items-center justify-center gap-1 rounded-xl border px-2 py-3 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-60 ${acessibilidade.textSize === size ? "border-primary bg-brand-soft text-primary ring-2 ring-primary/20" : "border-slate-200 text-slate-600 hover:border-primary/40 hover:bg-slate-50"}`}
+                  >
+                    <span
+                      className={`font-bold ${size === "normal" ? "text-base" : size === "large" ? "text-lg" : "text-xl"}`}
+                      aria-hidden="true"
+                    >
+                      {sample}
+                    </span>
+                    <span className="text-xs font-semibold">{label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="font-bold text-primary">Alto contraste</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Reforce o contraste de textos secundários e bordas.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={acessibilidade.highContrast}
+                  aria-label="Ativar alto contraste"
+                  disabled={acessibilidadeSalvando}
+                  onClick={() =>
+                    void atualizarAcessibilidade({
+                      ...acessibilidade,
+                      highContrast: !acessibilidade.highContrast,
+                    })
+                  }
+                  className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors duration-200 ${acessibilidade.highContrast ? "border-primary bg-primary" : "border-slate-300 bg-slate-200"} ${acessibilidadeSalvando ? "cursor-wait opacity-60" : "cursor-pointer"}`}
+                >
+                  <span
+                    className={`inline-block size-5 rounded-full bg-white shadow-sm transition-transform duration-200 ${acessibilidade.highContrast ? "translate-x-6" : "translate-x-1"}`}
+                    aria-hidden="true"
+                  />
+                </button>
+              </div>
+              <p aria-live="polite" className="mt-3 text-xs text-muted-foreground">
+                {acessibilidadeSalvando
+                  ? "Salvando preferências…"
+                  : acessibilidade.highContrast
+                    ? "Alto contraste ativado."
+                    : "Alto contraste desativado."}
+              </p>
+            </div>
+          </section>
+        ) : null}
+
+        {page === "account-data" && session ? (
+          <section className="mx-auto max-w-2xl space-y-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-center gap-4">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary">
+                  <UserRound className="size-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                    Minha conta
+                  </p>
+                  <h2 className="mt-1 text-2xl font-extrabold text-primary">
+                    Dados da conta
+                  </h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Atualize as informações usadas no seu perfil.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <form
+              onSubmit={(event) => void salvarDadosDaConta(event)}
+              className="space-y-4 rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6"
+            >
+              <Campo label="Nome completo">
+                <input
+                  required
+                  maxLength={120}
+                  type="text"
+                  autoComplete="name"
+                  value={dadosContaNome}
+                  onChange={(event) => setDadosContaNome(event.target.value)}
+                  placeholder="Seu nome completo"
+                  className="field"
+                />
+              </Campo>
+              <Campo label="Email">
+                <input
+                  required
+                  maxLength={254}
+                  type="email"
+                  autoComplete="email"
+                  value={dadosContaEmail}
+                  onChange={(event) => setDadosContaEmail(event.target.value)}
+                  placeholder="voce@exemplo.com"
+                  className="field"
+                />
+              </Campo>
+              <Campo label="Celular">
+                <input
+                  required
+                  type="tel"
+                  autoComplete="tel-national"
+                  inputMode="tel"
+                  value={dadosContaCelular}
+                  onChange={(event) =>
+                    setDadosContaCelular(formatarCelular(event.target.value))
+                  }
+                  placeholder="(00) 00000-0000"
+                  className="field"
+                />
+              </Campo>
+
+              {dadosContaErro ? (
+                <p
+                  role="alert"
+                  className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+                >
+                  {dadosContaErro}
+                </p>
+              ) : null}
+
+              <Button
+                type="submit"
+                size="lg"
+                disabled={dadosContaSalvando}
+                className="w-full rounded-xl font-bold shadow-lg shadow-primary/20"
               >
-                <ChevronLeft className="size-4" aria-hidden="true" />
-                Configurações
-              </button>
+                {dadosContaSalvando ? "Salvando dados..." : "Salvar alterações"}
+              </Button>
+            </form>
+          </section>
+        ) : null}
+
+        {page === "security" ? (
+          <section className="mx-auto max-w-2xl space-y-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                    Segurança
+                  </p>
+                  <h2 className="mt-1 text-2xl font-extrabold text-primary">
+                    Proteção da conta
+                  </h2>
+                </div>
+                <span className="flex size-11 items-center justify-center rounded-2xl bg-brand-soft text-primary">
+                  <ShieldCheck className="size-5" aria-hidden="true" />
+                </span>
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="text-base font-bold text-primary">
+                    Confirmação antes de ações sensíveis
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Exige confirmação antes de excluir cartões ou contas administrativas.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={confirmarAcoesSensiveis}
+                  aria-label="Alternar confirmação de ações sensíveis"
+                  disabled={segurancaSalvando || !session}
+                  onClick={() => void atualizarSeguranca(!confirmarAcoesSensiveis)}
+                  className={`relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors duration-200 ${confirmarAcoesSensiveis ? "border-primary bg-primary" : "border-slate-300 bg-slate-200"} ${segurancaSalvando || !session ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
+                >
+                  <span
+                    className={`inline-block size-5 rounded-full bg-white shadow-sm transition-transform duration-200 ${confirmarAcoesSensiveis ? "translate-x-6" : "translate-x-1"}`}
+                    aria-hidden="true"
+                  />
+                </button>
+              </div>
+              <p className="mt-4 text-xs text-muted-foreground">
+                {segurancaSalvando
+                  ? "Salvando ajuste de segurança…"
+                  : session
+                    ? confirmarAcoesSensiveis
+                      ? "A confirmação está ativa."
+                      : "A confirmação está desativada."
+                    : "Faça login para salvar essa preferência."}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => abrirPagina("reset-password")}
+              className="group flex w-full items-center gap-4 rounded-[22px] border border-[#dfe9f5] bg-white p-4 text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:p-6"
+            >
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand-soft text-primary transition-transform duration-200 group-hover:scale-105">
+                <KeyRound className="size-6" aria-hidden="true" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-bold text-primary">
+                  Redefinir senha
+                </span>
+                <span className="mt-1 block text-sm text-muted-foreground">
+                  Atualize sua senha com confirmação para manter o acesso seguro.
+                </span>
+              </span>
+              <ChevronRight
+                className="size-5 shrink-0 text-primary/50 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary"
+                aria-hidden="true"
+              />
+            </button>
+          </section>
+        ) : null}
+
+        {page === "reset-password" ? (
+          <section className="mx-auto max-w-xl space-y-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
+                    Segurança
+                  </p>
+                  <h2 className="mt-1 text-2xl font-extrabold text-primary">
+                    Redefinir senha
+                  </h2>
+                </div>
+                <span className="flex size-11 items-center justify-center rounded-2xl bg-brand-soft text-primary">
+                  <KeyRound className="size-5" aria-hidden="true" />
+                </span>
+              </div>
+            </div>
+
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
+              <form onSubmit={(event) => void redefinirSenha(event)} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="senha-atual" className="text-sm font-medium text-slate-700">
+                    Senha atual
+                  </label>
+                  <input
+                    id="senha-atual"
+                    type="password"
+                    value={senhaAtual}
+                    onChange={(event) => setSenhaAtual(event.target.value)}
+                    placeholder="Digite sua senha atual"
+                    className="field w-full"
+                    autoComplete="current-password"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="nova-senha" className="text-sm font-medium text-slate-700">
+                    Nova senha
+                  </label>
+                  <input
+                    id="nova-senha"
+                    type="password"
+                    value={novaSenha}
+                    onChange={(event) => setNovaSenha(event.target.value)}
+                    placeholder="Mínimo de 8 caracteres"
+                    className="field w-full"
+                    autoComplete="new-password"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="confirmacao-nova-senha" className="text-sm font-medium text-slate-700">
+                    Confirmar nova senha
+                  </label>
+                  <input
+                    id="confirmacao-nova-senha"
+                    type="password"
+                    value={confirmacaoNovaSenha}
+                    onChange={(event) => setConfirmacaoNovaSenha(event.target.value)}
+                    placeholder="Repita a nova senha"
+                    className="field w-full"
+                    autoComplete="new-password"
+                  />
+                </div>
+
+                {senhaResetError ? (
+                  <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                    {senhaResetError}
+                  </p>
+                ) : null}
+                {senhaResetSuccess ? (
+                  <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+                    {senhaResetSuccess}
+                  </p>
+                ) : null}
+
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={senhaResetLoading || !session}
+                >
+                  {senhaResetLoading ? "Atualizando senha…" : "Salvar nova senha"}
+                </Button>
+              </form>
+            </div>
+          </section>
+        ) : null}
+
+        {page === "appearance" ? (
+          <section className="mx-auto max-w-4xl space-y-4">
+            <div className="rounded-[24px] border border-[#dfe9f5] bg-white p-4 shadow-sm sm:p-6">
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">
                     Personalização
                   </p>
-                  <h2 className="mt-1 text-2xl font-extrabold text-[#0b1f33]">
+                  <h2 className="mt-1 text-2xl font-extrabold text-primary">
                     Aparência do app
                   </h2>
                   <p className="mt-1 text-sm text-muted-foreground">
@@ -2269,7 +3696,7 @@ function Index() {
             </div>
 
             {!dadosUsuarioCarregados ? (
-              <div className="rounded-2xl border border-[#dfe9f5] bg-white p-6 text-center text-sm text-muted-foreground shadow-sm">
+              <div className="rounded-2xl border border-[#dfe9f5] bg-white p-4 text-center text-sm text-muted-foreground shadow-sm sm:p-6">
                 Carregando suas preferências salvas…
               </div>
             ) : (
@@ -2303,7 +3730,7 @@ function Index() {
                       </span>
                       <span className="mt-3 flex items-center gap-2">
                         <span className="min-w-0 flex-1">
-                          <span className="block text-sm font-bold text-[#0b1f33]">
+                          <span className="block text-sm font-bold text-primary">
                             {tema.name}
                           </span>
                           <span className="mt-0.5 block truncate text-xs text-muted-foreground">
@@ -2337,350 +3764,10 @@ function Index() {
             </p>
           </section>
         ) : null}
-
-        {page === "admin" && session.role === "admin" ? (
-          <section className="space-y-6 pb-8">
-            <header className="flex flex-wrap items-end justify-between gap-4 rounded-[24px] bg-gradient-to-br from-slate-950 via-slate-900 to-[#12345a] p-6 text-white shadow-lg sm:p-8">
-              <div>
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-bold text-blue-100">
-                  <ShieldCheck className="size-4" aria-hidden="true" />
-                  Painel administrativo
-                </div>
-                <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-                  Visão geral
-                </h1>
-                <p className="mt-2 max-w-xl text-sm text-slate-300">
-                  Acompanhe as contas cadastradas e gerencie os acessos do RioCard Planner.
-                </p>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => void carregarUsuariosAdmin()}
-                disabled={adminLoading}
-                className="border-white/20 bg-white/10 text-white hover:bg-white/20 hover:text-white"
-              >
-                <RefreshCw
-                  className={`mr-2 size-4 ${adminLoading ? "animate-spin" : ""}`}
-                  aria-hidden="true"
-                />
-                Atualizar dados
-              </Button>
-            </header>
-
-            {adminError ? (
-              <div
-                role="alert"
-                className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
-              >
-                <span>{adminError}</span>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => void carregarUsuariosAdmin()}
-                  disabled={adminLoading}
-                >
-                  Tentar novamente
-                </Button>
-              </div>
-            ) : null}
-
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-500">
-                    Contas cadastradas
-                  </span>
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
-                    <Users className="size-5" aria-hidden="true" />
-                  </span>
-                </div>
-                <p className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950">
-                  {adminLoading && adminUsers.length === 0 ? "—" : adminResumo.total}
-                </p>
-                <p className="mt-1 text-xs text-slate-500">Total na plataforma</p>
-              </article>
-              <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-500">
-                    Clientes
-                  </span>
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-                    <UserRound className="size-5" aria-hidden="true" />
-                  </span>
-                </div>
-                <p className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950">
-                  {adminLoading && adminUsers.length === 0 ? "—" : adminResumo.clientes}
-                </p>
-                <p className="mt-1 text-xs text-slate-500">Contas padrão</p>
-              </article>
-              <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-500">
-                    Administradores
-                  </span>
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-violet-50 text-violet-700">
-                    <ShieldCheck className="size-5" aria-hidden="true" />
-                  </span>
-                </div>
-                <p className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950">
-                  {adminLoading && adminUsers.length === 0 ? "—" : adminResumo.administradores}
-                </p>
-                <p className="mt-1 text-xs text-slate-500">Com acesso administrativo</p>
-              </article>
-              <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-500">
-                    Novos nos últimos 30 dias
-                  </span>
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-amber-50 text-amber-700">
-                    <Plus className="size-5" aria-hidden="true" />
-                  </span>
-                </div>
-                <p className="mt-4 text-3xl font-extrabold tracking-tight text-slate-950">
-                  {adminLoading && adminUsers.length === 0 ? "—" : adminResumo.novos30Dias}
-                </p>
-                <p className="mt-1 text-xs text-slate-500">Baseado na data de cadastro</p>
-              </article>
-            </div>
-
-            <div className="grid gap-5 xl:grid-cols-[minmax(0,1.5fr)_minmax(280px,0.8fr)]">
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <h2 className="font-bold text-slate-950">Novos cadastros</h2>
-                    <p className="mt-1 text-xs text-slate-500">
-                      Registros por dia nos últimos sete dias
-                    </p>
-                  </div>
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-                    {adminResumo.ultimosSeteDias.reduce(
-                      (total, dia) => total + dia.total,
-                      0,
-                    )} cadastrados
-                  </span>
-                </div>
-                <div
-                  className="mt-6 grid h-40 grid-cols-7 items-end gap-2 sm:gap-4"
-                  role="img"
-                  aria-label="Gráfico de novos cadastros por dia nos últimos sete dias"
-                >
-                  {adminResumo.ultimosSeteDias.map(({ data, total }) => (
-                    <div
-                      key={data.toISOString()}
-                      className="flex h-full flex-col items-center justify-end gap-2"
-                    >
-                      <span className="text-xs font-bold text-slate-600">
-                        {total || ""}
-                      </span>
-                      <div className="flex h-28 w-full items-end rounded-t-lg bg-slate-50">
-                        <div
-                          className="w-full min-h-1 rounded-t-lg bg-gradient-to-t from-primary to-primary/60 transition-all duration-500"
-                          style={{
-                            height: `${Math.max(4, (total / adminResumo.maximoGrafico) * 100)}%`,
-                          }}
-                        />
-                      </div>
-                      <span className="text-[10px] font-medium text-slate-500 sm:text-xs">
-                        {data.toLocaleDateString("pt-BR", { weekday: "short" }).replace(".", "")}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-                <div className="flex items-center gap-3">
-                  <span className="flex size-11 items-center justify-center rounded-2xl bg-brand-soft text-primary">
-                    <ShieldCheck className="size-5" aria-hidden="true" />
-                  </span>
-                  <div>
-                    <h2 className="font-bold text-slate-950">Acessos e segurança</h2>
-                    <p className="text-xs text-slate-500">Resumo dos papéis</p>
-                  </div>
-                </div>
-                <div className="mt-5 space-y-4">
-                  <div>
-                    <div className="mb-1.5 flex justify-between text-xs">
-                      <span className="font-semibold text-slate-600">Clientes</span>
-                      <span className="font-bold text-slate-900">{adminResumo.clientes}</span>
-                    </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-slate-100">
-                      <div
-                        className="h-full rounded-full bg-emerald-500 transition-all"
-                        style={{
-                          width: `${adminResumo.total ? (adminResumo.clientes / adminResumo.total) * 100 : 0}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="mb-1.5 flex justify-between text-xs">
-                      <span className="font-semibold text-slate-600">Administradores</span>
-                      <span className="font-bold text-slate-900">{adminResumo.administradores}</span>
-                    </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-slate-100">
-                      <div
-                        className="h-full rounded-full bg-violet-500 transition-all"
-                        style={{
-                          width: `${adminResumo.total ? (adminResumo.administradores / adminResumo.total) * 100 : 0}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <p className="rounded-xl bg-slate-50 p-3 text-xs leading-relaxed text-slate-600">
-                    Alterações de papel e exclusões são verificadas pelo servidor. Sua própria conta administrativa não pode ser removida ou rebaixada por este painel.
-                  </p>
-                </div>
-              </section>
-            </div>
-
-            <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div className="border-b border-slate-100 p-5 sm:p-6">
-                <div className="flex flex-wrap items-end justify-between gap-4">
-                  <div>
-                    <h2 className="text-lg font-extrabold text-slate-950">Gestão de usuários</h2>
-                    <p className="mt-1 text-sm text-slate-500">
-                      {usuariosAdminFiltrados.length} de {adminUsers.length} contas
-                    </p>
-                  </div>
-                  <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                    <label className="relative min-w-0 flex-1 sm:w-72">
-                      <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-                      <input
-                        type="search"
-                        value={adminBusca}
-                        onChange={(event) => setAdminBusca(event.target.value)}
-                        placeholder="Buscar nome, email ou celular"
-                        aria-label="Buscar usuários"
-                        className="field h-10 pl-9"
-                      />
-                    </label>
-                    <select
-                      value={adminFiltro}
-                      onChange={(event) =>
-                        setAdminFiltro(event.target.value as typeof adminFiltro)
-                      }
-                      aria-label="Filtrar por tipo de conta"
-                      className="field h-10 sm:w-44"
-                    >
-                      <option value="all">Todos os papéis</option>
-                      <option value="client">Clientes</option>
-                      <option value="admin">Administradores</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              {adminLoading && adminUsers.length === 0 ? (
-                <div className="flex items-center justify-center gap-3 p-12 text-sm text-slate-500">
-                  <RefreshCw className="size-4 animate-spin" aria-hidden="true" />
-                  Carregando contas…
-                </div>
-              ) : usuariosAdminFiltrados.length === 0 ? (
-                <div className="p-10 text-center">
-                  <Users className="mx-auto size-9 text-slate-300" aria-hidden="true" />
-                  <p className="mt-3 font-semibold text-slate-800">
-                    {adminUsers.length === 0 ? "Nenhuma conta cadastrada" : "Nenhum resultado encontrado"}
-                  </p>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {adminUsers.length === 0
-                      ? "As contas criadas aparecerão aqui."
-                      : "Tente alterar o termo da busca ou o filtro selecionado."}
-                  </p>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full min-w-[800px] text-left text-sm">
-                    <thead className="bg-slate-50 text-[11px] uppercase tracking-wider text-slate-500">
-                      <tr>
-                        <th scope="col" className="px-5 py-3 font-bold">Usuário</th>
-                        <th scope="col" className="px-5 py-3 font-bold">Celular</th>
-                        <th scope="col" className="px-5 py-3 font-bold">Cadastro</th>
-                        <th scope="col" className="px-5 py-3 font-bold">Papel</th>
-                        <th scope="col" className="px-5 py-3 text-right font-bold">Ação</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {usuariosAdminFiltrados.map((usuario) => {
-                        const eMinhaConta = usuario.id === session.id;
-                        const dataCadastro = new Date(usuario.created_at);
-                        return (
-                          <tr key={usuario.id} className="transition-colors hover:bg-slate-50/80">
-                            <td className="px-5 py-4">
-                              <div className="flex min-w-56 items-center gap-3">
-                                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-sm font-extrabold text-primary">
-                                  {(usuario.name.trim().charAt(0) || "U").toUpperCase()}
-                                </span>
-                                <span className="min-w-0">
-                                  <span className="flex items-center gap-2 font-bold text-slate-900">
-                                    <span className="truncate">{usuario.name}</span>
-                                    {eMinhaConta ? (
-                                      <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700">Você</span>
-                                    ) : null}
-                                  </span>
-                                  <span className="block truncate text-xs text-slate-500">{usuario.email}</span>
-                                </span>
-                              </div>
-                            </td>
-                            <td className="whitespace-nowrap px-5 py-4 text-slate-600">{usuario.celular}</td>
-                            <td className="whitespace-nowrap px-5 py-4 text-slate-600">
-                              {Number.isNaN(dataCadastro.getTime())
-                                ? "—"
-                                : dataCadastro.toLocaleDateString("pt-BR", {
-                                    day: "2-digit",
-                                    month: "short",
-                                    year: "numeric",
-                                  })}
-                            </td>
-                            <td className="px-5 py-4">
-                              <select
-                                aria-label={`Papel de ${usuario.name}`}
-                                value={usuario.role}
-                                onChange={(event) =>
-                                  void atualizarRoleUsuario(
-                                    usuario,
-                                    event.target.value as AdminUser["role"],
-                                  )
-                                }
-                                disabled={eMinhaConta || adminAcaoId !== null}
-                                className={`rounded-lg border px-2.5 py-1.5 text-xs font-bold outline-none focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-60 ${usuario.role === "admin" ? "border-violet-200 bg-violet-50 text-violet-700" : "border-emerald-200 bg-emerald-50 text-emerald-700"}`}
-                              >
-                                <option value="client">Cliente</option>
-                                <option value="admin">Admin</option>
-                              </select>
-                            </td>
-                            <td className="px-5 py-4 text-right">
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-                                onClick={() => void excluirUsuarioAdmin(usuario)}
-                                disabled={eMinhaConta || adminAcaoId !== null}
-                              >
-                                {adminAcaoId === usuario.id ? (
-                                  <RefreshCw className="mr-2 size-3.5 animate-spin" aria-hidden="true" />
-                                ) : (
-                                  <Trash2 className="mr-2 size-3.5" aria-hidden="true" />
-                                )}
-                                Excluir
-                              </Button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </section>
-          </section>
-        ) : null}
+        </div>
       </div>
 
-      {novoCartaoAberto ? (
+      {novoCartaoAberto && page !== "card-themes" ? (
         <div
           className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto bg-slate-950/50 p-4 backdrop-blur-sm animate-in fade-in duration-200"
           onMouseDown={(event) => {
@@ -2748,7 +3835,6 @@ function Index() {
             >
               <Campo label="Nome do cartão">
                 <input
-                  autoFocus
                   required
                   maxLength={40}
                   type="text"
@@ -2759,35 +3845,30 @@ function Index() {
                 />
               </Campo>
 
-              <fieldset>
-                <legend className="mb-2 text-sm font-semibold text-foreground">
-                  Selecionar cor
-                </legend>
-                <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                  {(Object.keys(CARD_THEMES) as CardColorKey[]).map((cor) => {
-                    const tema = CARD_THEMES[cor];
-                    const selecionada = novoCartaoCor === cor;
-                    return (
-                      <button
-                        key={cor}
-                        type="button"
-                        aria-label={`Selecionar cor ${tema.name}`}
-                        aria-pressed={selecionada}
-                        onClick={() => setNovoCartaoCor(cor)}
-                        className={`flex items-center gap-2 rounded-xl border p-2 text-xs font-semibold transition-all duration-200 ${selecionada ? "border-[#0079fa] bg-blue-50 text-[#0754b8] ring-2 ring-[#0079fa]/20" : "border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"}`}
-                      >
-                        <span
-                          className="size-5 shrink-0 rounded-full border border-white shadow-sm"
-                          style={{
-                            background: `linear-gradient(135deg, ${tema.from} 0%, ${tema.via} 52%, ${tema.to} 100%)`,
-                          }}
-                        />
-                        {tema.name}
-                      </button>
-                    );
-                  })}
-                </div>
-              </fieldset>
+              <div>
+                <p className="mb-2 text-sm font-semibold text-foreground">
+                  Tema decorativo
+                </p>
+                <button
+                  type="button"
+                  onClick={() => abrirTemasDoCartao("home")}
+                  aria-label={`Selecionar tema decorativo. Tema atual: ${CARD_THEMES[novoCartaoCor].name}`}
+                  className="group flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-2 text-left transition hover:border-primary/40 hover:bg-brand-soft/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <span className="w-32 shrink-0">
+                    <CardThemePreview themeKey={novoCartaoCor} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-bold text-primary">
+                      {CARD_THEMES[novoCartaoCor].name}
+                    </span>
+                    <span className="mt-1 block text-xs text-muted-foreground">
+                      Toque para escolher outro tema
+                    </span>
+                  </span>
+                  <ChevronRight className="mr-2 size-5 shrink-0 text-primary/70 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                </button>
+              </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <Campo label="Valor da recarga (R$)">

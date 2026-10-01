@@ -4,7 +4,7 @@ import pg from "pg";
 
 const baseUrl = process.env.TEST_BASE_URL ?? "http://127.0.0.1:4173";
 const email = "teste@example.com";
-const password = process.env.TEST_PASSWORD;
+let password = process.env.TEST_PASSWORD;
 if (!password || password.length < 8) {
   console.error(
     "Defina TEST_PASSWORD com uma senha temporária de pelo menos 8 caracteres.",
@@ -169,6 +169,29 @@ try {
     cookie: loginCookie,
   });
   assert(validLoginMe.status === 200, "sessão de login válida");
+
+  const novaSenha = `${password}Nova1!`;
+  const passwordChange = await requestJson("/api/auth/change-password", {
+    method: "POST",
+    cookie: loginCookie,
+    body: {
+      currentPassword: password,
+      newPassword: novaSenha,
+      confirmPassword: novaSenha,
+    },
+  });
+  assert(passwordChange.status === 200, "redeinição de senha aceita", `HTTP ${passwordChange.status}`);
+  password = novaSenha;
+
+  const loginComNovaSenha = await requestJson("/api/auth/login", {
+    method: "POST",
+    body: { email, password: novaSenha, rememberMe: false },
+  });
+  assert(
+    loginComNovaSenha.status === 200,
+    "login com nova senha funciona",
+    `HTTP ${loginComNovaSenha.status}`,
+  );
 
   const wrongPassword = await requestJson("/api/auth/login", {
     method: "POST",
